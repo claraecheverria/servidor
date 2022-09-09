@@ -1,4 +1,4 @@
-package com.example.servidor;
+package com.example.servidor.model;
 
 
 import javax.persistence.Entity;
@@ -14,14 +14,13 @@ public class User {
     @GeneratedValue
     private Long id;
     private String nombre;
-    private String direccion;
-
+    private String email;
     private Long telefono;
 
 
-    public User(String nombre, String direccion, Long telefono) {
+    public User(String nombre, String email, Long telefono) {
         this.nombre = nombre;
-        this.direccion = direccion;
+        this.email = email;
         this.telefono = telefono;
     }
 
@@ -37,12 +36,12 @@ public class User {
         this.nombre = nombre;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setId(Long id) {
