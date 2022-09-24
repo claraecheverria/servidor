@@ -13,10 +13,15 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    @Transactional
+//    @Transactional
     public void saveUser ( User user){
-        System.out.println("usuario guardado!!!!!!!");
-        userRepository.save(user);
+        boolean existe = userRepository.existsById(user.getEmail());
+//        if (!existe){
+//            //comunicar login incorrecto
+//        }else {
+            System.out.println("usuario guardado!!!!!!!");
+            userRepository.save(user);
+//        }
 
     }
 

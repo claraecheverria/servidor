@@ -1,20 +1,24 @@
 package com.example.servidor.model;
 
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name="users")
 public class User {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    @NotBlank(message = "Name is mandatory")
     private String nombre;
+    @Id
+    @Email
     private String email;
+    @Min(9)
     private Long telefono;
 
 
@@ -42,14 +46,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Long getTelefono() {
