@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,6 +21,10 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+    @GetMapping("/listausers")
+    List<User> all() {
+        return userService.listaUsuarios();
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -23,6 +24,9 @@ public class UserService {
             userRepository.save(user);
 //        }
 
+    }
+    public List<User> listaUsuarios (){
+        return (List<User>) userRepository.findAll();
     }
 
     public void probando (){
