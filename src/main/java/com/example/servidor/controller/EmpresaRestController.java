@@ -1,10 +1,9 @@
 package com.example.servidor.controller;
 
 import com.example.servidor.model.Empresa;
-import com.example.servidor.model.User;
-import com.example.servidor.service.EmpresaService;
+import com.example.servidor.model.UserEmpresa;
+import com.example.servidor.service.ServiceAll;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,15 +12,19 @@ import java.util.List;
 @RequestMapping("/empresa")
 public class EmpresaRestController {
     @Autowired
-    private EmpresaService empresaService;
+    private ServiceAll serviceAll;
 
     @GetMapping("/listaempresas")
     List<Empresa> listaEmpresas() {
-        return empresaService.listarEmpresas();
+        return serviceAll.listarEmpresas();
     }
 
-    @PostMapping
+    @PostMapping("/crearEmpresa")
     public void crearEmpresa(@RequestBody Empresa empresa){
-        empresaService.guardarEmpresa(empresa);
+        serviceAll.guardarEmpresa(empresa);
+    }
+    @PostMapping("/crearUserEmpresa")
+    public void crearUserEmpresa (@RequestBody UserEmpresa userEmpresa){
+        serviceAll.saveUser(userEmpresa);
     }
 }

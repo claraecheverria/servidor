@@ -1,8 +1,7 @@
 package com.example.servidor.controller;
 
 import com.example.servidor.model.User;
-import com.example.servidor.repository.UserRepository;
-import com.example.servidor.service.UserService;
+import com.example.servidor.service.ServiceAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +19,16 @@ import java.util.Map;
 public class UserRestController {
 
     @Autowired
-    private UserService userService;
+    private ServiceAll serviceAll;
     @GetMapping("/listausers")
     List<User> all() {
-        return userService.listaUsuarios();
+        return serviceAll.listaUsuarios();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> registerUser (@Valid @RequestBody User user){
-        userService.saveUser(user);
+        serviceAll.saveUser(user);
         return ResponseEntity.ok("User is valid");
     }
 
@@ -46,10 +45,5 @@ public class UserRestController {
         return errors;
     }
 
-
-    @GetMapping
-    public void prueba (){
-        userService.probando();
-    }
 
 }
