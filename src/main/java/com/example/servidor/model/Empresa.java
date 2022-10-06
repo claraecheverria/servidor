@@ -18,6 +18,13 @@ public class Empresa {
     @OneToMany(mappedBy = "empresaEmpl")
     private List<UserEmpleado> usersEmpleados;
 
+    public Empresa(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Empresa() {
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

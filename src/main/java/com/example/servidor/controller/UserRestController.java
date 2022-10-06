@@ -28,7 +28,7 @@ public class UserRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> registerUser (@Valid @RequestBody User user){
-        serviceAll.saveUser(user);
+//        serviceAll.saveUser(user);
         return ResponseEntity.ok("User is valid");
     }
 

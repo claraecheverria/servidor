@@ -5,20 +5,22 @@ import javax.validation.constraints.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="type",
+        discriminatorType = DiscriminatorType.STRING)
 @Table(name="users")
-public class User {
+public abstract class User {
     @Id
     @Email
     private String email;
 
-    @NotBlank(message = "Cedula is mandatory")
+//    @NotBlank(message = "Cedula is mandatory")
     private Long cedula;
-    @NotBlank(message = "Name is mandatory")
+//    @NotBlank(message = "Name is mandatory")
     private String nombre;
 
-    @NotBlank(message = "Password is mandatory")
+//    @NotBlank(message = "Password is mandatory")
     private String password;
-    @Min(9)
+//    @Min(9)
     private Long telefono;
 
 
