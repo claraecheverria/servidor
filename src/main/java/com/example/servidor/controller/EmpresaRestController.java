@@ -1,7 +1,6 @@
 package com.example.servidor.controller;
 
 import com.example.servidor.model.Empresa;
-import com.example.servidor.model.User;
 import com.example.servidor.model.UserEmpresa;
 import com.example.servidor.service.ServiceAll;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,8 @@ public class EmpresaRestController {
     }
     @PostMapping("/crearUserEmpresa")
     public void crearUserEmpresa (@RequestBody UserEmpresa userEmpresa){
-        serviceAll.saveUserEmpresa(userEmpresa);
-//        Empresa nuevaEmpresa = new Empresa("Empresaaa");
-//        UserEmpresa nuevo = new UserEmpresa("clara@gmail.com", 52324016L,"Clara", "12345", 2222L, nuevaEmpresa);
-//        serviceAll.saveUserEmpresa(nuevo);
+        Empresa estaEmpresa = userEmpresa.getEmpresa();
+        UserEmpresa guardarEste = new UserEmpresa(userEmpresa.getEmail(), userEmpresa.getCedula(), userEmpresa.getNombre(), userEmpresa.getPassword(), userEmpresa.getTelefono(), estaEmpresa);
+        serviceAll.saveUserEmpresa(guardarEste);
     }
 }

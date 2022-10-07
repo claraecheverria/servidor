@@ -20,4 +20,12 @@ public class UserEmpresa extends User{
 
     public UserEmpresa() {
     }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
 }
