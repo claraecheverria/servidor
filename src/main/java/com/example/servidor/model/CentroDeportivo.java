@@ -12,16 +12,25 @@ public class CentroDeportivo {
     @Id
     private String nombre;
 
+    private String rut;
+    private String razonSocial;
+    private String direccion;
+
     @OneToMany(mappedBy = "centroDeportivo")
     private List<UserCentroDeportivo> usersCentroDep;
 
+    //CONSTRUCTORES
     public CentroDeportivo() {
     }
 
-    public CentroDeportivo(String nombre) {
+    public CentroDeportivo(String nombre, String rut, String razonSocial, String direccion) {
         this.nombre = nombre;
+        this.rut = rut;
+        this.razonSocial = razonSocial;
+        this.direccion = direccion;
     }
 
+    //GETTERS Y SETTERS
     public String getNombre() {
         return nombre;
     }
@@ -29,4 +38,29 @@ public class CentroDeportivo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public String getRUT() {
+        return rut;
+    }
+
+    public void setRUT(String RUT) {
+        this.rut = RUT;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
 }

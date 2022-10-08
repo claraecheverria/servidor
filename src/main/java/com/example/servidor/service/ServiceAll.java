@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceAll {
     @Autowired
     private EmpresaRepository empresaRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private UserEmpresaRepository userEmpresaRepository;
 
@@ -35,6 +38,13 @@ public class ServiceAll {
     }
     public List<CentroDeportivo> listarCentrosDep(){
         return (List<CentroDeportivo>) centroDeportivoRepository.findAll();
+    }
+    public List<String[]> obtenerUsuarioPorIdyPassword (User user){
+        return userRepository.findUserByEmailAndPasswordNamedParamsNative(user.getEmail(), user.getPassword());
+    }
+
+    public boolean userExiste(User user){
+        return userRepository.existsById(user.getEmail());
     }
 
     public void saveUserCentroDep (UserCentroDeportivo userCentroDeportivo){

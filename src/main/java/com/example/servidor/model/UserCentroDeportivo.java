@@ -4,6 +4,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @DiscriminatorValue("CENTRO_DEP")
@@ -11,6 +12,7 @@ public class UserCentroDeportivo extends User{
 
     @ManyToOne
     @JoinColumn(name = "centro_dep_nombre")
+    @NotNull
     private CentroDeportivo centroDeportivo;
 
     public UserCentroDeportivo(String email, Long cedula, String nombre, String password, Long telefono, CentroDeportivo centroDeportivo) {

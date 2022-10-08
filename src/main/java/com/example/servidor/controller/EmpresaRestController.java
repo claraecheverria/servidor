@@ -6,6 +6,7 @@ import com.example.servidor.service.ServiceAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,11 +21,11 @@ public class EmpresaRestController {
     }
 
     @PostMapping("/crearEmpresa")
-    public void crearEmpresa(@RequestBody Empresa empresa){
+    public void crearEmpresa(@Valid @RequestBody Empresa empresa){
         serviceAll.guardarEmpresa(empresa);
     }
     @PostMapping("/crearUserEmpresa")
-    public void crearUserEmpresa (@RequestBody UserEmpresa userEmpresa){
+    public void crearUserEmpresa (@Valid @RequestBody UserEmpresa userEmpresa){
         Empresa estaEmpresa = userEmpresa.getEmpresa();
         UserEmpresa guardarEste = new UserEmpresa(userEmpresa.getEmail(), userEmpresa.getCedula(), userEmpresa.getNombre(), userEmpresa.getPassword(), userEmpresa.getTelefono(), estaEmpresa);
         serviceAll.saveUserEmpresa(guardarEste);
