@@ -19,6 +19,9 @@ public class CentroDeportivo {
     @OneToMany(mappedBy = "centroDeportivo")
     private List<UserCentroDeportivo> usersCentroDep;
 
+    @OneToMany(mappedBy = "centroDeportivoServicio")
+    private List<Servicio> serviciosCentroDep;
+
     //CONSTRUCTORES
     public CentroDeportivo() {
     }
@@ -63,4 +66,15 @@ public class CentroDeportivo {
         this.direccion = direccion;
     }
 
+    @Override
+    public String toString() {
+        return "CentroDeportivo{" +
+                "nombre='" + nombre + '\'' +
+                ", rut='" + rut + '\'' +
+                ", razonSocial='" + razonSocial + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", usersCentroDep=" + usersCentroDep +
+                ", serviciosCentroDep=" + serviciosCentroDep +
+                '}';
+    }
 }
