@@ -5,7 +5,6 @@ import com.example.servidor.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +20,9 @@ public class ServiceAll {
     private CentroDeportivoRepository centroDeportivoRepository;
     @Autowired
     private UserCentroDeportivoRepository userCentroDeportivoRepository;
+    @Autowired
+    private UserEmpleadoRepository userEmpleadoRepository;
+
     @Autowired
     private ServicioRepository servicioRepository;
 
@@ -48,6 +50,13 @@ public class ServiceAll {
         return userRepository.findUserByEmailAndPasswordNamedParamsNative(user.getEmail(), user.getPassword());
     }
 
+    public UserEmpleado obtenerUserEmplPorId (String email){
+        return  userRepository.findUserEmpleadoByEmail(email);
+    }
+    public void saveUserEmpleado (UserEmpleado userEmpleado){
+        userEmpleadoRepository.save(userEmpleado);
+    }
+
     public boolean userExiste(User user){
         return userRepository.existsById(user.getEmail());
     }
@@ -59,11 +68,15 @@ public class ServiceAll {
         System.out.println("EStoy acaaaa");
         servicioRepository.save(servicio);
     }
+
+    public Optional<Servicio> obtenerServicioById (ServicioIdNew id){
+        return servicioRepository.findById(id);
+    }
     public List<User> listaUsuarios (){
         return (List<User>) userEmpresaRepository.findAll();
     }
-    public List<Servicio> listaServicios(){
-        return (List<Servicio>) servicioRepository.findAll();
+    public List<Servicio> listaServicios(String type){
+        return servicioRepository.findAllServicios(type);
     }
 
 }

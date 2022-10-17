@@ -2,11 +2,11 @@ package com.example.servidor.controller;
 
 import com.example.servidor.model.Servicio;
 import com.example.servidor.model.User;
+import com.example.servidor.model.UserEmpleado;
 import com.example.servidor.service.ServiceAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,8 +19,10 @@ public class UserRestController {
     List<User> all() {
         return serviceAll.listaUsuarios();
     }
-    @GetMapping("/devuelveUser")//para login
+    @GetMapping("/devuelveUser")//para login, queda guardado toda la info en userADevolver
     List<String[]> devuelveUser(){
+//        System.out.println(userADevolver.get(0)[0]);
+//        System.out.println(userADevolver.get(0)[1]);
         return userADevolver;
     }
     @PostMapping("/userParaCheck")//para login
@@ -30,7 +32,34 @@ public class UserRestController {
 
     @GetMapping("/listaServicios")//valido para todos los empleados
     List<Servicio> listServicios (){
-        return serviceAll.listaServicios();
+        return serviceAll.listaServicios("SERVICIO");
+    }
+
+    @GetMapping("/listaServiciosCancha")//valido para todos los empleados
+    List<Servicio> listServiciosCancha (){
+        return serviceAll.listaServicios("CANCHA");
+    }
+
+    @PostMapping("/agregarServicioFav")//falta probar si funciona
+    public void agregarServicioFav(@RequestBody Servicio servicio){
+        String emailUser = userADevolver.get(0)[1];
+        UserEmpleado currentUser = serviceAll.obtenerUserEmplPorId(emailUser);
+        List<Servicio> listaFavs = currentUser.getServiciosFavoritos();
+        listaFavs.add(servicio);
+        currentUser.setServiciosFavoritos(listaFavs);
+        serviceAll.saveUserEmpleado(currentUser);
+    }
+
+    @PostMapping("/eliminarServicioFav")//falta probar si funciona
+    public void eliminarServicioFav(@RequestBody Servicio servicio){
+        String emailUser = userADevolver.get(0)[1];
+        UserEmpleado currentUser = serviceAll.obtenerUserEmplPorId(emailUser);
+        List<Servicio> listaFavs = currentUser.getServiciosFavoritos();
+        if (listaFavs.contains(servicio)){
+            listaFavs.remove(servicio);
+        }
+        currentUser.setServiciosFavoritos(listaFavs);
+        serviceAll.saveUserEmpleado(currentUser);
     }
 
 //    @PostMapping
