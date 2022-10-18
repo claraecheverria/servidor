@@ -21,8 +21,6 @@ public class UserRestController {
     }
     @GetMapping("/devuelveUser")//para login, queda guardado toda la info en userADevolver
     List<String[]> devuelveUser(){
-//        System.out.println(userADevolver.get(0)[0]);
-//        System.out.println(userADevolver.get(0)[1]);
         return userADevolver;
     }
     @PostMapping("/userParaCheck")//para login

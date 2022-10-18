@@ -27,6 +27,14 @@ public class UserEmpleado extends User{
             inverseJoinColumns = {@JoinColumn(name = "servicio_nombre", referencedColumnName = "nombre"), @JoinColumn(name = "servicio_centro_dep", referencedColumnName = "centro_dep_nombre")})
     private List<Servicio> serviciosFavoritos;
 
+    @ManyToMany
+    @JoinTable(
+            name = "reservas_Empl",
+            joinColumns = @JoinColumn(name = "empl_id"),
+            inverseJoinColumns = @JoinColumn(name = "reserva_id", referencedColumnName = "id"))
+//            inverseJoinColumns = {@JoinColumn(name = "cancha_nombre", referencedColumnName = "nombre"), @JoinColumn(name = "cancha_centro_dep", referencedColumnName = "centro_dep_nombre")})
+    private List<Reserva> reservasHechas;
+
     //CONSTRUCTORES
     public UserEmpleado(String email, Long cedula, String nombre, String password, Long telefono, LocalDate vencimientoCarne, Long saldo, Empresa empresaEmpl) {
         super(email, cedula, nombre, password, telefono);

@@ -2,14 +2,19 @@ package com.example.servidor.model;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @DiscriminatorValue("CANCHA")
 public class Cancha extends Servicio{
     private int cupos;
+
+    @OneToMany(mappedBy = "cancha")
+    private List<Reserva> reservas;
 
 
     //CONSTRUCTORES
