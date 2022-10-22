@@ -1,5 +1,7 @@
 package com.example.servidor.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -11,15 +13,16 @@ import java.util.List;
 public class CentroDeportivo {
     @Id
     private String nombre;
-
     private String rut;
     private String razonSocial;
     private String direccion;
 
     @OneToMany(mappedBy = "centroDeportivo")
+//    @JsonManagedReference
     private List<UserCentroDeportivo> usersCentroDep;
 
     @OneToMany(mappedBy = "centroDeportivoServicio")
+//    @JsonManagedReference
     private List<Servicio> serviciosCentroDep;
 
     //CONSTRUCTORES
@@ -42,12 +45,12 @@ public class CentroDeportivo {
         this.nombre = nombre;
     }
 
-    public String getRUT() {
+    public String getRut() {
         return rut;
     }
 
-    public void setRUT(String RUT) {
-        this.rut = RUT;
+    public void setRut(String rut) {
+        this.rut = rut;
     }
 
     public String getRazonSocial() {
@@ -65,6 +68,22 @@ public class CentroDeportivo {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+//    public List<UserCentroDeportivo> getUsersCentroDep() {
+//        return usersCentroDep;
+//    }
+//
+//    public void setUsersCentroDep(List<UserCentroDeportivo> usersCentroDep) {
+//        this.usersCentroDep = usersCentroDep;
+//    }
+//
+//    public List<Servicio> getServiciosCentroDep() {
+//        return serviciosCentroDep;
+//    }
+//
+//    public void setServiciosCentroDep(List<Servicio> serviciosCentroDep) {
+//        this.serviciosCentroDep = serviciosCentroDep;
+//    }
 
     @Override
     public String toString() {

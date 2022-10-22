@@ -2,6 +2,9 @@ package com.example.servidor.controller;
 
 import com.example.servidor.model.*;
 import com.example.servidor.service.ServiceAll;
+import com.example.servidor.service.ServiceCentroDeportivo;
+import com.example.servidor.service.ServiceServicio;
+import com.example.servidor.service.ServiceUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,40 +18,45 @@ import java.util.Set;
 public class CentroDepRestController {
 
     @Autowired
-    private ServiceAll serviceAll;
+    private ServiceUser serviceUser;
+    @Autowired
+    private ServiceCentroDeportivo serviceCentroDeportivo;
+
+    @Autowired
+    private ServiceServicio serviceServicio;
 
     @GetMapping("/listaCentrosDep")// para admin
     List<CentroDeportivo> listaCentrosDep() {
-        return serviceAll.listarCentrosDep();
+        return serviceCentroDeportivo.listarCentrosDep();
     }
 
     @PostMapping("/crearCentroDep")//para admin
     public void crearCentroDep(@Valid @RequestBody CentroDeportivo centroDeportivo){
-        serviceAll.guardarCentroDep(centroDeportivo);
+        serviceCentroDeportivo.guardarCentroDep(centroDeportivo);
     }
     @PostMapping("/crearUserCentroDep")//para admin
     public void crearUserCentroDep (@Valid @RequestBody UserCentroDeportivo userCentroDeportivo){
         CentroDeportivo esteCentro = userCentroDeportivo.getCentroDeportivo();
         UserCentroDeportivo guardarEste = new UserCentroDeportivo(userCentroDeportivo.getEmail(), userCentroDeportivo.getCedula(), userCentroDeportivo.getNombre(), userCentroDeportivo.getPassword(), userCentroDeportivo.getTelefono(), esteCentro);
-        serviceAll.saveUserCentroDep(guardarEste);
+        serviceUser.saveUserCentroDep(guardarEste);
     }
     @PostMapping("/crearServicioCentroDep")//no funciona?
     public void crearServicioCentroDep (@Valid @RequestBody Servicio servicio){
         CentroDeportivo esteCentro = servicio.getCentroDeportivoServicio();
-        CentroDeportivo unCentro = serviceAll.obtenerCentroDepPorId(servicio.getCentroDeportivoServicio().getNombre()).get();
+        CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId(servicio.getCentroDeportivoServicio().getNombre()).get();
         System.out.println(esteCentro.getDireccion());
         System.out.println("Estoy aqui!!!!");
         Servicio guardarEste = new Servicio(servicio.getKey().getNombre(), unCentro, servicio.getPrecio(), servicio.getDias(),servicio.getHoraInicio(),servicio.getHoraFin(), servicio.getDescripcion(), servicio.getTipo());
-        serviceAll.saveServicioCentroDep(guardarEste);
+        serviceServicio.saveServicioCentroDep(guardarEste);
     }
 
     @GetMapping("/prueba")
     public String prueba(){
-        CentroDeportivo unCentro = serviceAll.obtenerCentroDepPorId("SuperGYM").get();
+        CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId("SuperGYM").get();
         ServicioIdNew nuevaId = new ServicioIdNew();
         nuevaId.setNombre("Pilates");
         nuevaId.setCentroDeportivo("SuperGYM");
-        Servicio unServicio = serviceAll.obtenerServicioById(nuevaId).get();
+        Servicio unServicio = serviceServicio.obtenerServicioById(nuevaId).get();
         Set<DiasDeLaSemana> diass = new HashSet<>();
         Set<DiasDeLaSemana> diass2 = unServicio.getDias();
         diass2.add(DiasDeLaSemana.Lunes);
@@ -59,7 +67,7 @@ public class CentroDepRestController {
 //        Servicio unServicio = new Servicio("yogaa", unCentro, 555L, "lunes11hs", "clase de yoga para principiantes", "Clases" );
         System.out.println("HOLA");
         System.out.println(unServicio.getDescripcion());
-        serviceAll.saveServicioCentroDep(unServicio);
+        serviceServicio.saveServicioCentroDep(unServicio);
         return "prueba check";
     }
 }

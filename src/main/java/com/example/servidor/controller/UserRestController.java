@@ -1,12 +1,14 @@
 package com.example.servidor.controller;
 
+import com.example.servidor.model.Cancha;
 import com.example.servidor.model.Servicio;
 import com.example.servidor.model.User;
 import com.example.servidor.model.UserEmpleado;
-import com.example.servidor.service.ServiceAll;
+import com.example.servidor.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -14,10 +16,18 @@ import java.util.List;
 public class UserRestController {
     private List<String[]> userADevolver;
     @Autowired
-    private ServiceAll serviceAll;
+    private ServiceUser serviceUser;
+    @Autowired
+    private ServiceReserva serviceReserva;
+    @Autowired
+    private ServiceServicio serviceServicio;
+    @Autowired
+    private ServiceCentroDeportivo serviceCentroDeportivo;
+    @Autowired
+    private ServiceEmpresa serviceEmpresa;
     @GetMapping("/listausers")
     List<User> all() {
-        return serviceAll.listaUsuarios();
+        return serviceUser.listaUsuarios();
     }
     @GetMapping("/devuelveUser")//para login, queda guardado toda la info en userADevolver
     List<String[]> devuelveUser(){
@@ -25,39 +35,67 @@ public class UserRestController {
     }
     @PostMapping("/userParaCheck")//para login
     public void userParaCheck(@RequestBody User user){
-        userADevolver = serviceAll.obtenerUsuarioPorIdyPassword(user);
+        userADevolver = serviceUser.obtenerUsuarioPorIdyPassword(user);
     }
 
     @GetMapping("/listaServicios")//valido para todos los empleados
     List<Servicio> listServicios (){
-        return serviceAll.listaServicios("SERVICIO");
+
+        List<Servicio> listaQuery = serviceServicio.listaServicios("SERVICIO");
+        List<Servicio> listaSinFav = new ArrayList<>();
+        for (int i = 0; i< listaQuery.size(); i++){
+            Servicio currentServ = listaQuery.get(i);
+            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
+            listaSinFav.add(nuevoServ);
+        }
+        return listaSinFav;
+
+//        return serviceAll.listaServicios("SERVICIO");
     }
 
     @GetMapping("/listaServiciosCancha")//valido para todos los empleados
     List<Servicio> listServiciosCancha (){
-        return serviceAll.listaServicios("CANCHA");
+
+        List<Servicio> listaQuery = serviceServicio.listaServicios("CANCHA");
+        List<Servicio> listaSinFav = new ArrayList<>();
+        for (int i = 0; i< listaQuery.size(); i++){
+            Servicio currentServ = listaQuery.get(i);
+            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
+            listaSinFav.add(nuevoServ);
+        }
+        return listaSinFav;
     }
 
     @PostMapping("/agregarServicioFav")//falta probar si funciona
     public void agregarServicioFav(@RequestBody Servicio servicio){
         String emailUser = userADevolver.get(0)[1];
-        UserEmpleado currentUser = serviceAll.obtenerUserEmplPorId(emailUser);
+//        UserEmpleado currentUser = serviceAll.obtenerUserEmplPorId(emailUser);
+        UserEmpleado currentUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
         List<Servicio> listaFavs = currentUser.getServiciosFavoritos();
         listaFavs.add(servicio);
         currentUser.setServiciosFavoritos(listaFavs);
-        serviceAll.saveUserEmpleado(currentUser);
+        serviceUser.saveUserEmpleado(currentUser);
     }
 
     @PostMapping("/eliminarServicioFav")//falta probar si funciona
     public void eliminarServicioFav(@RequestBody Servicio servicio){
         String emailUser = userADevolver.get(0)[1];
-        UserEmpleado currentUser = serviceAll.obtenerUserEmplPorId(emailUser);
+        UserEmpleado currentUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
+//        UserEmpleado currentUser = serviceAll.obtenerUserEmplPorId(emailUser);
         List<Servicio> listaFavs = currentUser.getServiciosFavoritos();
         if (listaFavs.contains(servicio)){
             listaFavs.remove(servicio);
         }
         currentUser.setServiciosFavoritos(listaFavs);
-        serviceAll.saveUserEmpleado(currentUser);
+        serviceUser.saveUserEmpleado(currentUser);
+    }
+
+    @GetMapping("/serviciosFavDeUnUser")
+    public List<String[]> serviciosFavDeUnUser(){
+        String emailUser = userADevolver.get(0)[1];
+        List<String[]> listaFavs = serviceUser.obtenerServiciosFav(emailUser);
+
+        return  listaFavs;
     }
 
 //    @PostMapping

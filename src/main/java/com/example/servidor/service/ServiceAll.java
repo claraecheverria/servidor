@@ -53,6 +53,10 @@ public class ServiceAll {
     public UserEmpleado obtenerUserEmplPorId (String email){
         return  userRepository.findUserEmpleadoByEmail(email);
     }
+
+    public Optional<User> obtenerUserPorId (String email){
+        return userRepository.findById(email);
+    }
     public void saveUserEmpleado (UserEmpleado userEmpleado){
         userEmpleadoRepository.save(userEmpleado);
     }

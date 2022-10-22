@@ -1,5 +1,7 @@
 package com.example.servidor.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Servicio {
     @ManyToOne
     @JoinColumn(name = "centro_dep_nombre")
     @MapsId("centroDeportivo")
+//    @JsonBackReference
     private CentroDeportivo centroDeportivoServicio;
     private Long precio;
 
