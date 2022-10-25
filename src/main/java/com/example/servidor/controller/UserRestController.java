@@ -45,7 +45,7 @@ public class UserRestController {
         List<Servicio> listaSinFav = new ArrayList<>();
         for (int i = 0; i< listaQuery.size(); i++){
             Servicio currentServ = listaQuery.get(i);
-            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
+            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes());
             listaSinFav.add(nuevoServ);
         }
         return listaSinFav;
@@ -60,7 +60,7 @@ public class UserRestController {
         List<Servicio> listaSinFav = new ArrayList<>();
         for (int i = 0; i< listaQuery.size(); i++){
             Servicio currentServ = listaQuery.get(i);
-            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
+            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes());
             listaSinFav.add(nuevoServ);
         }
         return listaSinFav;

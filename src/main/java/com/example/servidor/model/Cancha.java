@@ -22,11 +22,10 @@ public class Cancha extends Servicio{
     public Cancha() {
     }
 
-    public Cancha(String name, CentroDeportivo centroDeportivoServicio, Long precio, Set<DiasDeLaSemana> dias, LocalTime horaInicio, LocalTime horaFin, String descripcion, String tipo, int cupos) {
-        super(name, centroDeportivoServicio, precio, dias, horaInicio, horaFin, descripcion, tipo);
+    public Cancha(String name, CentroDeportivo centroDeportivoServicio, Long precio, Set<DiasDeLaSemana> dias, LocalTime horaInicio, LocalTime horaFin, String descripcion, String tipo, Set<Imagen> imagenes, int cupos) {
+        super(name, centroDeportivoServicio, precio, dias, horaInicio, horaFin, descripcion, tipo, imagenes);
         this.cupos = cupos;
     }
-
     //GETTERS Y SETTERS
 
     public int getCupos() {

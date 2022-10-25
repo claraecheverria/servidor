@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,8 +39,9 @@ public class Servicio {
 
     @ManyToMany(mappedBy = "serviciosFavoritos")
     private List<UserEmpleado> favoritos;
-//    @Lob
-//    private byte[] imagen;
+
+    @OneToMany(mappedBy = "servicio")
+    private Set<Imagen> imagenes;
 
 
     //CONSTRUCTORES
@@ -47,7 +49,7 @@ public class Servicio {
     public Servicio() {
     }
 
-    public Servicio(String name, CentroDeportivo centroDeportivoServicio, Long precio, Set<DiasDeLaSemana> dias, LocalTime horaInicio, LocalTime horaFin, String descripcion, String tipo) {
+    public Servicio(String name, CentroDeportivo centroDeportivoServicio, Long precio, Set<DiasDeLaSemana> dias, LocalTime horaInicio, LocalTime horaFin, String descripcion, String tipo, Set<Imagen> imagenes) {
         this.key = new ServicioIdNew();
         this.key.setNombre(name);
         this.key.setCentroDeportivo(centroDeportivoServicio.getNombre());
@@ -58,6 +60,7 @@ public class Servicio {
         this.horaFin = horaFin;
         this.descripcion = descripcion;
         this.tipo = tipo;
+        this.imagenes = imagenes;
     }
     //GETTERS Y SETTERS
 
@@ -125,17 +128,6 @@ public class Servicio {
     public void setFavoritos(List<UserEmpleado> favoritos) {
         this.favoritos = favoritos;
     }
-    //    public byte[] getImagen() {
-//        return imagen;
-//    }
-//
-//    public void setImagen(byte[] imagen) {
-//        this.imagen = imagen;
-//    }
-//    @JsonSetter("imagen")
-//    public void setImagen(String imagen) throws UnsupportedEncodingException {
-//        this.imagen = Base64.decode(imagen.getBytes("UTF-8"));
-//    }
 
 
     public CentroDeportivo getCentroDeportivoServicio() {
@@ -146,4 +138,11 @@ public class Servicio {
         this.centroDeportivoServicio = centroDeportivoServicio;
     }
 
+    public Set<Imagen> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(Set<Imagen> imagenes) {
+        this.imagenes = imagenes;
+    }
 }

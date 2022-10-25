@@ -46,7 +46,7 @@ public class CentroDepRestController {
         CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId(servicio.getCentroDeportivoServicio().getNombre()).get();
         System.out.println(esteCentro.getDireccion());
         System.out.println("Estoy aqui!!!!");
-        Servicio guardarEste = new Servicio(servicio.getKey().getNombre(), unCentro, servicio.getPrecio(), servicio.getDias(),servicio.getHoraInicio(),servicio.getHoraFin(), servicio.getDescripcion(), servicio.getTipo());
+        Servicio guardarEste = new Servicio(servicio.getKey().getNombre(), unCentro, servicio.getPrecio(), servicio.getDias(),servicio.getHoraInicio(),servicio.getHoraFin(), servicio.getDescripcion(), servicio.getTipo(), servicio.getImagenes());
         serviceServicio.saveServicioCentroDep(guardarEste);
     }
 
