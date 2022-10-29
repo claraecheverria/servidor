@@ -2,19 +2,20 @@ package com.example.servidor.model;
 
 import javax.persistence.*;
 
-@Entity
+//@Entity
+@Embeddable
 public class Imagen {
-    @Id
-    @GeneratedValue
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Lob
     private String imagen;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn()
-    @JoinColumn()
-    private Servicio servicio;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn()
+//    @JoinColumn()
+//    private Servicio servicio;
 
 
     public Imagen() {
@@ -24,13 +25,13 @@ public class Imagen {
         this.imagen = imagen;
     }
 
-    public Long getId() {
-        return id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getImagen() {
         return imagen;

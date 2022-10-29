@@ -40,7 +40,9 @@ public class Servicio {
     @ManyToMany(mappedBy = "serviciosFavoritos")
     private List<UserEmpleado> favoritos;
 
-    @OneToMany(mappedBy = "servicio")
+//    @OneToMany(mappedBy = "servicio")
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = Imagen.class)
+    @JoinTable(name = "servicio_imagenes", joinColumns = {@JoinColumn(name = "servicio_nombre", referencedColumnName = "nombre"), @JoinColumn(name = "servicio_centro_dep", referencedColumnName = "centro_dep_nombre")})
     private Set<Imagen> imagenes;
 
 

@@ -1,20 +1,25 @@
 package com.example.servidor.controller;
 
-import com.example.servidor.model.Cancha;
-import com.example.servidor.model.Servicio;
-import com.example.servidor.model.User;
-import com.example.servidor.model.UserEmpleado;
+import com.example.servidor.model.*;
 import com.example.servidor.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
     private List<String[]> userADevolver;
+
+    public List<String[]> getUserADevolver() {
+        return userADevolver;
+    }
+
     @Autowired
     private ServiceUser serviceUser;
     @Autowired
@@ -38,6 +43,23 @@ public class UserRestController {
         userADevolver = serviceUser.obtenerUsuarioPorIdyPassword(user);
     }
 
+    @GetMapping("/checkExisteUser")//para hacer reserva ver si invitados existen
+    public boolean checkExisteUser(@RequestParam("email") String emailUser){
+        return serviceUser.userExiste(emailUser);
+    }
+
+    @GetMapping("/reservasEnFecha")
+    public List<Reserva> reservasEnFechaYServicio (@RequestParam("fecha")@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha,
+                                                   @RequestParam("servicio") String servicioNombre,
+                                                   @RequestParam("centroDep") String centroDepNombre){
+//        Cancha esteServicio = (Cancha) serviceServicio.obtenerServicioPorNombreYCentroDep(servicioNombre,centroDepNombre).get();
+        List<Reserva> reservas = serviceReserva.obtenerReservasPorFechaYId(fecha,servicioNombre,centroDepNombre);
+        System.out.println(reservas.size());
+        System.out.println(reservas.get(0).getId());
+        System.out.println(reservas.get(0).getFecha());
+        return reservas;
+    }
+
     @GetMapping("/listaServicios")//valido para todos los empleados
     List<Servicio> listServicios (){
 
@@ -46,6 +68,9 @@ public class UserRestController {
         for (int i = 0; i< listaQuery.size(); i++){
             Servicio currentServ = listaQuery.get(i);
             Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes());
+            for (Imagen imagen : nuevoServ.getImagenes()){
+                System.out.println(imagen);
+            }
             listaSinFav.add(nuevoServ);
         }
         return listaSinFav;
@@ -64,6 +89,8 @@ public class UserRestController {
             listaSinFav.add(nuevoServ);
         }
         return listaSinFav;
+//        List<Servicio> listaADevolver = (List<Servicio>) serviceServicio.listaCancha();
+//        return listaADevolver;
     }
 
     @PostMapping("/agregarServicioFav")//falta probar si funciona
@@ -91,11 +118,12 @@ public class UserRestController {
     }
 
     @GetMapping("/serviciosFavDeUnUser")
-    public List<String[]> serviciosFavDeUnUser(){
+    public List<Servicio> serviciosFavDeUnUser(){
         String emailUser = userADevolver.get(0)[1];
+        UserEmpleado unUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
         List<String[]> listaFavs = serviceUser.obtenerServiciosFav(emailUser);
-
-        return  listaFavs;
+        List<Servicio> listaFavs2 = unUser.getServiciosFavoritos();
+        return  listaFavs2;
     }
 
 //    @PostMapping

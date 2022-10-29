@@ -18,7 +18,8 @@ public class ServiceReserva {
         reservaRepository.save(reserva);
     }
 
-//    public List<Reserva> obtenerReservasPorFechaYId (LocalDate fecha, String nombreCancha, String canchaCentroDep){
-//        return reservaRepository.findReservasByFechaAndCanchaId(fecha,canchaCentroDep,nombreCancha);
-//    }
+    public List<Reserva> obtenerReservasPorFechaYId(LocalDate fecha, String nombreCancha, String centroDepNombre){
+        return reservaRepository.findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivo(fecha,nombreCancha,centroDepNombre);
+    }
+
 }

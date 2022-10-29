@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,8 @@ import java.util.Set;
 @RequestMapping("/centroDeportivo")
 public class CentroDepRestController {
 
+    @Autowired
+    private UserRestController userRestController;
     @Autowired
     private ServiceUser serviceUser;
     @Autowired
@@ -44,10 +47,42 @@ public class CentroDepRestController {
     public void crearServicioCentroDep (@Valid @RequestBody Servicio servicio){
         CentroDeportivo esteCentro = servicio.getCentroDeportivoServicio();
         CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId(servicio.getCentroDeportivoServicio().getNombre()).get();
-        System.out.println(esteCentro.getDireccion());
-        System.out.println("Estoy aqui!!!!");
-        Servicio guardarEste = new Servicio(servicio.getKey().getNombre(), unCentro, servicio.getPrecio(), servicio.getDias(),servicio.getHoraInicio(),servicio.getHoraFin(), servicio.getDescripcion(), servicio.getTipo(), servicio.getImagenes());
+//        System.out.println(esteCentro.getDireccion());
+//        System.out.println("Estoy aqui!!!!");
+        Set<Imagen> imagenes = servicio.getImagenes();
+        Set<Imagen> imagenesAGuardar = new HashSet<>();
+        int currentIndex = 0;
+        for (Imagen element : imagenes) {
+            System.out.println("Element at index" +currentIndex +" is: "+ element.getImagen());
+            Imagen nuevaImagen = new Imagen(element.getImagen());
+            imagenesAGuardar.add(nuevaImagen);
+            if (currentIndex == imagenes.size()){
+                break;
+            }
+            currentIndex++;
+        }
+        Servicio guardarEste = new Servicio(servicio.getKey().getNombre(), unCentro, servicio.getPrecio(), servicio.getDias(),servicio.getHoraInicio(),servicio.getHoraFin(), servicio.getDescripcion(), servicio.getTipo(), imagenesAGuardar);
         serviceServicio.saveServicioCentroDep(guardarEste);
+    }
+    @PostMapping("/guardarFoto")//para admin
+    public void crearGuardarFoto (@RequestBody String encodedString){
+        System.out.println(encodedString);
+        System.out.println(userRestController.getUserADevolver().get(0)[8]);
+        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
+        List<Servicio> servicios = serviceServicio.listaServiciosByCentroDep(centroDepNombre);
+        Servicio unServ = servicios.get(0);
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        Imagen nuevaImagen = new Imagen(encodedString);
+        System.out.println(nuevaImagen.getImagen());
+        Set<Imagen> setImagenes = new HashSet<>();
+        setImagenes.add(nuevaImagen);
+        unServ.setImagenes(setImagenes);
+        System.out.println(setImagenes.size());
+        System.out.println(unServ.getKey().getNombre());
+        System.out.println(unServ.getImagenes().size());
+//        unServ.setImagen(encodedString);
+        serviceServicio.saveServicioCentroDep(unServ);
+        System.out.println("Imagen guardadaaa");
     }
 
     @GetMapping("/prueba")
