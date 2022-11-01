@@ -52,12 +52,30 @@ public class UserRestController {
     public List<Reserva> reservasEnFechaYServicio (@RequestParam("fecha")@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha,
                                                    @RequestParam("servicio") String servicioNombre,
                                                    @RequestParam("centroDep") String centroDepNombre){
-//        Cancha esteServicio = (Cancha) serviceServicio.obtenerServicioPorNombreYCentroDep(servicioNombre,centroDepNombre).get();
         List<Reserva> reservas = serviceReserva.obtenerReservasPorFechaYId(fecha,servicioNombre,centroDepNombre);
-        System.out.println(reservas.size());
-        System.out.println(reservas.get(0).getId());
-        System.out.println(reservas.get(0).getFecha());
+//        System.out.println(reservas.size());
+//        System.out.println(reservas.get(0).getId());
+//        System.out.println(reservas.get(0).getFecha());
         return reservas;
+    }
+
+    @PostMapping("/hacerReserva")//falta probar si funciona
+    public void hacerReserva(@RequestBody Reserva reserva) {
+        String emailUser = userADevolver.get(0)[1];
+        UserEmpleado currentUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
+        List<Reserva> listReservasUser = currentUser.getReservasHechas();
+        List<UserEmpleado> listaEmplQueLlega = reserva.getUsuariosInvitados();
+        List<UserEmpleado> listaEmplAGuardar = new ArrayList<>();
+        for(int i = 0; i<listaEmplQueLlega.size(); i++){
+            UserEmpleado curreeeentUser = listaEmplQueLlega.get(i);
+            UserEmpleado userConTodosLosDatos = (UserEmpleado) serviceUser.obtenerUserPorId(curreeeentUser.getEmail()).get();
+            listaEmplAGuardar.add(userConTodosLosDatos);
+        }
+        reserva.setUsuariosInvitados(listaEmplAGuardar);
+        listReservasUser.add(reserva);
+        currentUser.setReservasHechas(listReservasUser);
+        serviceUser.saveUserEmpleado(currentUser);
+        serviceReserva.saveReserva(reserva);
     }
 
     @GetMapping("/listaServicios")//valido para todos los empleados
@@ -68,19 +86,16 @@ public class UserRestController {
         for (int i = 0; i< listaQuery.size(); i++){
             Servicio currentServ = listaQuery.get(i);
             Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes());
-            for (Imagen imagen : nuevoServ.getImagenes()){
-                System.out.println(imagen);
-            }
+//            for (Imagen imagen : nuevoServ.getImagenes()){
+//                System.out.println(imagen);
+//            }
             listaSinFav.add(nuevoServ);
         }
         return listaSinFav;
-
-//        return serviceAll.listaServicios("SERVICIO");
     }
 
     @GetMapping("/listaServiciosCancha")//valido para todos los empleados
     List<Servicio> listServiciosCancha (){
-
         List<Servicio> listaQuery = serviceServicio.listaServicios("CANCHA");
         List<Servicio> listaSinFav = new ArrayList<>();
         for (int i = 0; i< listaQuery.size(); i++){
@@ -89,8 +104,6 @@ public class UserRestController {
             listaSinFav.add(nuevoServ);
         }
         return listaSinFav;
-//        List<Servicio> listaADevolver = (List<Servicio>) serviceServicio.listaCancha();
-//        return listaADevolver;
     }
 
     @PostMapping("/agregarServicioFav")//falta probar si funciona
@@ -126,25 +139,6 @@ public class UserRestController {
         return  listaFavs2;
     }
 
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public ResponseEntity<String> registerUser (@Valid @RequestBody User user){
-////        serviceAll.saveUser(user);
-//        return ResponseEntity.ok("User is valid");
-//    }
-//
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public Map<String, String> handleValidationExceptions(
-//            MethodArgumentNotValidException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//        return errors;
-//    }
 
 
 }

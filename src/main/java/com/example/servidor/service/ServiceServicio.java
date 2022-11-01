@@ -20,7 +20,6 @@ public class ServiceServicio {
     private CanchaRepository canchaRepository;
 
     public void saveServicioCentroDep (Servicio servicio){
-        System.out.println("EStoy acaaaa");
         servicioRepository.save(servicio);
     }
 

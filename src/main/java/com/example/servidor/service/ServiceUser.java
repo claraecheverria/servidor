@@ -37,9 +37,9 @@ public class ServiceUser {
     public List<String[]> obtenerServiciosFav(String email){
         return userEmpleadoRepository.findServiciosFavByUserEmplId(email);
     }
-    public UserEmpleado obtenerUserEmplPorId (String email){
-        return  userRepository.findUserEmpleadoByEmail(email);
-    }
+//    public UserEmpleado obtenerUserEmplPorId (String email){
+//        return  userRepository.findUserEmpleadoByEmail(email);
+//    }
     public Optional<User> obtenerUserPorId (String email){
         return  userRepository.findById(email);
     }

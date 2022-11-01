@@ -35,6 +35,7 @@ public class ServidorApplication {
 //        UserEmpresa usr3 = new UserEmpresa("empr3@gmail.com", 33333336L,"Pablo", "12345", 1211L, emp3);
 //        UserEmpresa usr4 = new UserEmpresa("empr4@gmail.com", 44444446L,"Pia", "12345", 1211L, emp4);
 //        UserEmpleado userrr = new UserEmpleado("empl1@gmail.com", 55555556L, "Clara", "12345", 1211L, LocalDate.of(2022,11,22), 5000L, emp1);
+//        UserEmpleado userrr2 = new UserEmpleado("empl2@gmail.com", 66666666L, "Camila", "12345", 1211L, LocalDate.of(2022,11,22), 5000L, emp1);
 //        UserRepository userRepository = configurableApplicationContext.getBean(UserEmpresaRepository.class);
 //        EmpresaRepository empresaRepository = configurableApplicationContext.getBean(EmpresaRepository.class);
 //        empresaRepository.save(emp1);
@@ -46,15 +47,16 @@ public class ServidorApplication {
 //        userRepository.save(usr3);
 //        userRepository.save(usr4);
 //        userRepository.save(userrr);
+//        userRepository.save(userrr2);
 //
 //        CentroDeportivo centro1 = new CentroDeportivo("Centro1", "111", "191", "Rivera 534");
 //        CentroDeportivo centro2 = new CentroDeportivo("Centro2", "222", "292", "Cavia 2866");
 //        CentroDeportivo centro3 = new CentroDeportivo("Centro3", "333", "393", "Av. Brasil 2243");
 //        CentroDeportivo centro4 = new CentroDeportivo("Centro4", "444", "494", "Cno. de los horneros");
-//        UserCentroDeportivo user1 = new UserCentroDeportivo("centro1@gmail.com", 11111116L,"Ana", "12345", 1211L, centro1);
-//        UserCentroDeportivo user2 = new UserCentroDeportivo("centro2@gmail.com", 22222226L,"Amelia", "12345", 1211L, centro2);
-//        UserCentroDeportivo user3 = new UserCentroDeportivo("centro3@gmail.com", 33333336L,"Alicia", "12345", 1211L, centro3);
-//        UserCentroDeportivo user4 = new UserCentroDeportivo("centro4@gmail.com", 44444446L,"Anuel", "12345", 1211L, centro4);
+//        UserCentroDeportivo user1 = new UserCentroDeportivo("centro1@gmail.com", 77777776L,"Ana", "12345", 1211L, centro1);
+//        UserCentroDeportivo user2 = new UserCentroDeportivo("centro2@gmail.com", 88888886L,"Amelia", "12345", 1211L, centro2);
+//        UserCentroDeportivo user3 = new UserCentroDeportivo("centro3@gmail.com", 99999996L,"Alicia", "12345", 1211L, centro3);
+//        UserCentroDeportivo user4 = new UserCentroDeportivo("centro4@gmail.com", 21111116L,"Anuel", "12345", 1211L, centro4);
 //        CentroDeportivoRepository centroDeportivoRepository = configurableApplicationContext.getBean(CentroDeportivoRepository.class);
 //        centroDeportivoRepository.save(centro1);
 //        centroDeportivoRepository.save(centro2);

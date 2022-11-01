@@ -45,7 +45,7 @@ public class CentroDepRestController {
     }
     @PostMapping("/crearServicioCentroDep")//no funciona?
     public void crearServicioCentroDep (@Valid @RequestBody Servicio servicio){
-        CentroDeportivo esteCentro = servicio.getCentroDeportivoServicio();
+//        CentroDeportivo esteCentro = servicio.getCentroDeportivoServicio();
         CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId(servicio.getCentroDeportivoServicio().getNombre()).get();
 //        System.out.println(esteCentro.getDireccion());
 //        System.out.println("Estoy aqui!!!!");
@@ -66,22 +66,17 @@ public class CentroDepRestController {
     }
     @PostMapping("/guardarFoto")//para admin
     public void crearGuardarFoto (@RequestBody String encodedString){
-        System.out.println(encodedString);
-        System.out.println(userRestController.getUserADevolver().get(0)[8]);
         String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
         List<Servicio> servicios = serviceServicio.listaServiciosByCentroDep(centroDepNombre);
-        Servicio unServ = servicios.get(0);
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+//        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
         Imagen nuevaImagen = new Imagen(encodedString);
-        System.out.println(nuevaImagen.getImagen());
         Set<Imagen> setImagenes = new HashSet<>();
         setImagenes.add(nuevaImagen);
-        unServ.setImagenes(setImagenes);
-        System.out.println(setImagenes.size());
-        System.out.println(unServ.getKey().getNombre());
-        System.out.println(unServ.getImagenes().size());
-//        unServ.setImagen(encodedString);
-        serviceServicio.saveServicioCentroDep(unServ);
+        for (int i = 0; i< servicios.size(); i++){
+            Servicio unServ = servicios.get(i);
+            unServ.setImagenes(setImagenes);
+            serviceServicio.saveServicioCentroDep(unServ);
+        }
         System.out.println("Imagen guardadaaa");
     }
 
