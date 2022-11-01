@@ -45,6 +45,9 @@ public class Servicio {
     @JoinTable(name = "servicio_imagenes", joinColumns = {@JoinColumn(name = "servicio_nombre", referencedColumnName = "nombre"), @JoinColumn(name = "servicio_centro_dep", referencedColumnName = "centro_dep_nombre")})
     private Set<Imagen> imagenes;
 
+    @OneToMany(mappedBy = "servicio")
+    List<Ingreso> ingresos;
+
 
     //CONSTRUCTORES
 
