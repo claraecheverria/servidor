@@ -1,10 +1,7 @@
 package com.example.servidor.controller;
 
 import com.example.servidor.model.*;
-import com.example.servidor.service.ServiceAll;
-import com.example.servidor.service.ServiceCentroDeportivo;
-import com.example.servidor.service.ServiceServicio;
-import com.example.servidor.service.ServiceUser;
+import com.example.servidor.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +21,10 @@ public class CentroDepRestController {
     private ServiceUser serviceUser;
     @Autowired
     private ServiceCentroDeportivo serviceCentroDeportivo;
-
     @Autowired
     private ServiceServicio serviceServicio;
+    @Autowired
+    private ServiceIngreso serviceIngreso;
 
     @GetMapping("/listaCentrosDep")// para admin
     List<CentroDeportivo> listaCentrosDep() {
@@ -45,10 +43,7 @@ public class CentroDepRestController {
     }
     @PostMapping("/crearServicioCentroDep")//no funciona?
     public void crearServicioCentroDep (@Valid @RequestBody Servicio servicio){
-//        CentroDeportivo esteCentro = servicio.getCentroDeportivoServicio();
         CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId(servicio.getCentroDeportivoServicio().getNombre()).get();
-//        System.out.println(esteCentro.getDireccion());
-//        System.out.println("Estoy aqui!!!!");
         Set<Imagen> imagenes = servicio.getImagenes();
         Set<Imagen> imagenesAGuardar = new HashSet<>();
         int currentIndex = 0;
@@ -63,6 +58,21 @@ public class CentroDepRestController {
         }
         Servicio guardarEste = new Servicio(servicio.getKey().getNombre(), unCentro, servicio.getPrecio(), servicio.getDias(),servicio.getHoraInicio(),servicio.getHoraFin(), servicio.getDescripcion(), servicio.getTipo(), imagenesAGuardar);
         serviceServicio.saveServicioCentroDep(guardarEste);
+    }
+
+    @GetMapping("/listaServiciosEsteCentroDep")
+    public List<Servicio> listaServiciosEsteCentroDep(){
+        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
+        List<Servicio> servicios = serviceServicio.listaServiciosByCentroDep(centroDepNombre);
+        return servicios;
+    }
+
+    @PostMapping("/guardarIngreso")
+    public void guardarIngreso(@RequestBody Ingreso ingreso){
+        String emailUserEmpl = ingreso.getUserEmpleado().getEmail();
+        UserEmpleado esteUsrEmpl = (UserEmpleado) serviceUser.obtenerUserPorId(emailUserEmpl).get();
+        Ingreso nuevoIngreso = new Ingreso(ingreso.getFecha(), ingreso.getHoraInicio(),ingreso.getHoraFin(),ingreso.getServicio(), esteUsrEmpl);
+        serviceIngreso.saveIngreso(nuevoIngreso);
     }
     @PostMapping("/guardarFoto")//para admin
     public void crearGuardarFoto (@RequestBody String encodedString){

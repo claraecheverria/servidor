@@ -39,7 +39,8 @@ public class ServiceServicio {
     public List<Servicio> listaServiciosAll(){
         return (List<Servicio>) servicioRepository.findAll();
     }
-   public List<Servicio> listaServiciosByCentroDep(String centroDep){
+    @Transactional
+    public List<Servicio> listaServiciosByCentroDep(String centroDep){
         return servicioRepository.findByKey_CentroDeportivo(centroDep);
     }
 

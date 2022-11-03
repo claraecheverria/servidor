@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,9 +54,16 @@ public class UserRestController {
                                                    @RequestParam("servicio") String servicioNombre,
                                                    @RequestParam("centroDep") String centroDepNombre){
         List<Reserva> reservas = serviceReserva.obtenerReservasPorFechaYId(fecha,servicioNombre,centroDepNombre);
+        List<Reserva> reservasSinFotos = new ArrayList<>();
+//        for(int i=0; i<reservas.size(); i++){
+//            Reserva currentReserva = reservas.get(i);
+//            Cancha currentCancha = currentReserva.getCancha();
+//            currentCancha.setImagenes(new HashSet<>());
+//            currentReserva.setCancha(currentCancha);
+//            reservasSinFotos.add(currentReserva);
+//        }
 //        System.out.println(reservas.size());
-//        System.out.println(reservas.get(0).getId());
-//        System.out.println(reservas.get(0).getFecha());
+//        System.out.println(reservasSinFotos.size());
         return reservas;
     }
 
