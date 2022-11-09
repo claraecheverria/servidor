@@ -1,5 +1,6 @@
 package com.example.servidor.service;
 
+import com.example.servidor.model.Cancha;
 import com.example.servidor.model.Servicio;
 import com.example.servidor.model.ServicioIdNew;
 import com.example.servidor.repository.CanchaRepository;
@@ -34,6 +35,11 @@ public class ServiceServicio {
     @Transactional
     public List<Servicio> listaServicios(String type){
         return servicioRepository.findAllServicios(type);
+    }
+
+    @Transactional
+    public List<Cancha> listaServiciosCancha(String type){
+        return servicioRepository.findAllServiciosCancha(type);
     }
 
     public List<Servicio> listaServiciosAll(){

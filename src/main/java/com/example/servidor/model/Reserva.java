@@ -1,5 +1,8 @@
 package com.example.servidor.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,7 +18,7 @@ public class Reserva {
     private LocalDate fecha;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-
+    @JsonBackReference
     @ManyToOne
 //    @JoinColumn(name = "cancha_nombre")
     @JoinColumn(name = "cancha_nombre", referencedColumnName = "nombre")
@@ -23,6 +26,7 @@ public class Reserva {
     private Cancha cancha;
 
     @ManyToMany(mappedBy = "reservasHechas")
+    @JsonIgnoreProperties("reservasHechas")//falta probar si funciona
     private List<UserEmpleado> usuariosInvitados;
 
     public Long getId() {

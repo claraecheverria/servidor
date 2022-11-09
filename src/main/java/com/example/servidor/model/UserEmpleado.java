@@ -1,5 +1,7 @@
 package com.example.servidor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,12 +29,13 @@ public class UserEmpleado extends User{
             inverseJoinColumns = {@JoinColumn(name = "servicio_nombre", referencedColumnName = "nombre"), @JoinColumn(name = "servicio_centro_dep", referencedColumnName = "centro_dep_nombre")})
     private List<Servicio> serviciosFavoritos;
 
+
     @ManyToMany
     @JoinTable(
             name = "reservas_Empl",
             joinColumns = @JoinColumn(name = "empl_id"),
             inverseJoinColumns = @JoinColumn(name = "reserva_id", referencedColumnName = "id"))
-//            inverseJoinColumns = {@JoinColumn(name = "cancha_nombre", referencedColumnName = "nombre"), @JoinColumn(name = "cancha_centro_dep", referencedColumnName = "centro_dep_nombre")})
+    @JsonIgnoreProperties("usuariosInvitados")//falta probar si funciona
     private List<Reserva> reservasHechas;
 
     @OneToMany(mappedBy = "userEmpleado")

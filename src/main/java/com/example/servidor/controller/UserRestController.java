@@ -54,16 +54,16 @@ public class UserRestController {
                                                    @RequestParam("servicio") String servicioNombre,
                                                    @RequestParam("centroDep") String centroDepNombre){
         List<Reserva> reservas = serviceReserva.obtenerReservasPorFechaYId(fecha,servicioNombre,centroDepNombre);
-        List<Reserva> reservasSinFotos = new ArrayList<>();
+        List<Reserva> reservasConMenosDatos = new ArrayList<>();
 //        for(int i=0; i<reservas.size(); i++){
 //            Reserva currentReserva = reservas.get(i);
 //            Cancha currentCancha = currentReserva.getCancha();
-//            currentCancha.setImagenes(new HashSet<>());
-//            currentReserva.setCancha(currentCancha);
-//            reservasSinFotos.add(currentReserva);
+//            Cancha nuevaCanchaMenosInfo = new Cancha(currentCancha.getKey().getNombre(),currentCancha.getCentroDeportivoServicio().getNombre());
+//            currentReserva.setCancha(nuevaCanchaMenosInfo);
+//            reservasConMenosDatos.add(currentReserva);
 //        }
 //        System.out.println(reservas.size());
-//        System.out.println(reservasSinFotos.size());
+//        System.out.println(reservasConMenosDatos.size());
         return reservas;
     }
 
@@ -78,12 +78,15 @@ public class UserRestController {
             UserEmpleado curreeeentUser = listaEmplQueLlega.get(i);
             UserEmpleado userConTodosLosDatos = (UserEmpleado) serviceUser.obtenerUserPorId(curreeeentUser.getEmail()).get();
             listaEmplAGuardar.add(userConTodosLosDatos);
+//            System.out.println(userConTodosLosDatos.getEmail());
         }
         reserva.setUsuariosInvitados(listaEmplAGuardar);
+//        System.out.println(reserva.getUsuariosInvitados().get(0).getEmail());
         listReservasUser.add(reserva);
         currentUser.setReservasHechas(listReservasUser);
-        serviceUser.saveUserEmpleado(currentUser);
         serviceReserva.saveReserva(reserva);
+        serviceUser.saveUserEmpleado(currentUser);
+//        System.out.println(serviceReserva.obtenerReservaPorId(reserva.getId()).get().getUsuariosInvitados().get(0).getEmail());
     }
 
     @GetMapping("/listaServicios")//valido para todos los empleados
@@ -103,13 +106,16 @@ public class UserRestController {
     }
 
     @GetMapping("/listaServiciosCancha")//valido para todos los empleados
-    List<Servicio> listServiciosCancha (){
-        List<Servicio> listaQuery = serviceServicio.listaServicios("CANCHA");
-        List<Servicio> listaSinFav = new ArrayList<>();
+    List<Cancha> listServiciosCancha (){
+//        List<Servicio> listaQuery = serviceServicio.listaServicios("CANCHA");
+        List<Cancha> listaQuery = serviceServicio.listaServiciosCancha("CANCHA");
+
+        List<Cancha> listaSinFav = new ArrayList<>();
         for (int i = 0; i< listaQuery.size(); i++){
-            Servicio currentServ = listaQuery.get(i);
-            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes());
-            listaSinFav.add(nuevoServ);
+            Cancha currentServ = listaQuery.get(i);
+            Cancha nuevaCancha = new Cancha(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes(),currentServ.getCupos());
+//            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes());
+            listaSinFav.add(nuevaCancha);
         }
         return listaSinFav;
     }

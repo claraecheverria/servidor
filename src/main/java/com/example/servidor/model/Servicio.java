@@ -67,6 +67,13 @@ public class Servicio {
         this.tipo = tipo;
         this.imagenes = imagenes;
     }
+
+    public Servicio(String nombre, String centroDepNombre) {
+        this.key = new ServicioIdNew();
+        this.key.setNombre(nombre);
+        this.key.setCentroDeportivo(centroDepNombre);
+    }
+
     //GETTERS Y SETTERS
 
 
