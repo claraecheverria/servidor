@@ -1,6 +1,7 @@
 package com.example.servidor.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+//@JsonFilter("filter sin imagenes")
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "UniqueFechaCanchaYHoras", columnNames = { "fecha", "cancha_nombre","cancha_centro_dep" ,"horaInicio", "horaFin" }) })
 public class Reserva {
@@ -18,7 +20,8 @@ public class Reserva {
     private LocalDate fecha;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnoreProperties("reservas")
     @ManyToOne
 //    @JoinColumn(name = "cancha_nombre")
     @JoinColumn(name = "cancha_nombre", referencedColumnName = "nombre")

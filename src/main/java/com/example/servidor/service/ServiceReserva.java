@@ -18,6 +18,7 @@ public class ServiceReserva {
     @Autowired
     private ReservaRepository reservaRepository;
 
+    @Transactional
     public void saveReserva(Reserva reserva){
         reservaRepository.save(reserva);
     }

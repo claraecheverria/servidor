@@ -35,10 +35,11 @@ public class UserEmpleado extends User{
             name = "reservas_Empl",
             joinColumns = @JoinColumn(name = "empl_id"),
             inverseJoinColumns = @JoinColumn(name = "reserva_id", referencedColumnName = "id"))
-    @JsonIgnoreProperties("usuariosInvitados")//falta probar si funciona
+    @JsonIgnoreProperties("usuariosInvitados")
     private List<Reserva> reservasHechas;
 
     @OneToMany(mappedBy = "userEmpleado")
+    @JsonIgnoreProperties("userEmpleado")
     private List<Ingreso> ingresos;
 
     //CONSTRUCTORES

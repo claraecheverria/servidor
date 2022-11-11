@@ -1,5 +1,7 @@
 package com.example.servidor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,11 +17,13 @@ public class Ingreso {
     private LocalTime horaInicio;
     private LocalTime horaFin;
 
+    @JsonIgnoreProperties("ingresos")
     @ManyToOne
     @JoinColumn(name = "servicio_nombre", referencedColumnName = "nombre")
     @JoinColumn(name = "servicio_centro_dep", referencedColumnName = "centro_dep_nombre")
     private Servicio servicio;
 
+    @JsonIgnoreProperties("ingresos")
     @ManyToOne
     @JoinColumn(name = "userEmpleado")
     private UserEmpleado userEmpleado;

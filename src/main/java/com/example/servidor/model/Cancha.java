@@ -1,5 +1,6 @@
 package com.example.servidor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.DiscriminatorValue;
@@ -15,7 +16,8 @@ import java.util.Set;
 public class Cancha extends Servicio{
     private int cupos;
 
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnoreProperties("cancha")
     @OneToMany(mappedBy = "cancha")
     private List<Reserva> reservas;
 

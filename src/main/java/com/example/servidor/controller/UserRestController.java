@@ -2,10 +2,19 @@ package com.example.servidor.controller;
 
 import com.example.servidor.model.*;
 import com.example.servidor.service.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,7 +63,20 @@ public class UserRestController {
                                                    @RequestParam("servicio") String servicioNombre,
                                                    @RequestParam("centroDep") String centroDepNombre){
         List<Reserva> reservas = serviceReserva.obtenerReservasPorFechaYId(fecha,servicioNombre,centroDepNombre);
-        List<Reserva> reservasConMenosDatos = new ArrayList<>();
+
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        objectMapper.findAndRegisterModules();
+//        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+//        objectMapper.setDateFormat(df);
+//        FilterProvider filters = new SimpleFilterProvider().addFilter("filter sin imagenes", SimpleBeanPropertyFilter.serializeAllExcept("imagenes"));
+//        ObjectWriter writer = objectMapper.writer(filters);
+//        try {
+//            System.out.println(writer.writeValueAsString(reservas));
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//        List<Reserva> reservasConMenosDatos = new ArrayList<>();
 //        for(int i=0; i<reservas.size(); i++){
 //            Reserva currentReserva = reservas.get(i);
 //            Cancha currentCancha = currentReserva.getCancha();
@@ -67,6 +89,7 @@ public class UserRestController {
         return reservas;
     }
 
+    @Transactional
     @PostMapping("/hacerReserva")//falta probar si funciona
     public void hacerReserva(@RequestBody Reserva reserva) {
         String emailUser = userADevolver.get(0)[1];
@@ -78,15 +101,14 @@ public class UserRestController {
             UserEmpleado curreeeentUser = listaEmplQueLlega.get(i);
             UserEmpleado userConTodosLosDatos = (UserEmpleado) serviceUser.obtenerUserPorId(curreeeentUser.getEmail()).get();
             listaEmplAGuardar.add(userConTodosLosDatos);
-//            System.out.println(userConTodosLosDatos.getEmail());
         }
         reserva.setUsuariosInvitados(listaEmplAGuardar);
-//        System.out.println(reserva.getUsuariosInvitados().get(0).getEmail());
+        Set<Imagen> imagenesVacias = new HashSet<>();
+//        reserva.getCancha().setImagenes(imagenesVacias);
         listReservasUser.add(reserva);
         currentUser.setReservasHechas(listReservasUser);
         serviceReserva.saveReserva(reserva);
         serviceUser.saveUserEmpleado(currentUser);
-//        System.out.println(serviceReserva.obtenerReservaPorId(reserva.getId()).get().getUsuariosInvitados().get(0).getEmail());
     }
 
     @GetMapping("/listaServicios")//valido para todos los empleados

@@ -10,6 +10,7 @@ import com.example.servidor.repository.UserEmpresaRepository;
 import com.example.servidor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,7 @@ public class ServiceUser {
     public Optional<User> obtenerUserPorId (String email){
         return  userRepository.findById(email);
     }
+    @Transactional
     public void saveUserEmpleado (UserEmpleado userEmpleado){
         userEmpleadoRepository.save(userEmpleado);
         System.out.println("user guradado!!");
