@@ -50,4 +50,14 @@ public class ServiceServicio {
         return servicioRepository.findByKey_CentroDeportivo(centroDep);
     }
 
+    @Transactional
+    public List<Servicio> listaServiciosByCentroDepAndType (String type, String centroDepNombre){
+        return servicioRepository.findServiciosByCentroDepAndType(type,centroDepNombre);
+    }
+
+    @Transactional
+    public List<Cancha> listaCanchasByCentroDepAndType (String type, String centroDepNombre){
+        return servicioRepository.findCanchasByCentroDepAndType(type,centroDepNombre);
+    }
+
 }

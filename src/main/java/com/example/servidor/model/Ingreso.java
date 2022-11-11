@@ -1,5 +1,6 @@
 package com.example.servidor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -17,28 +18,29 @@ public class Ingreso {
     private LocalTime horaInicio;
     private LocalTime horaFin;
 
-    @JsonIgnoreProperties("ingresos")
     @ManyToOne
     @JoinColumn(name = "servicio_nombre", referencedColumnName = "nombre")
     @JoinColumn(name = "servicio_centro_dep", referencedColumnName = "centro_dep_nombre")
     private Servicio servicio;
 
-    @JsonIgnoreProperties("ingresos")
     @ManyToOne
     @JoinColumn(name = "userEmpleado")
     private UserEmpleado userEmpleado;
+
+    private long importe;
 
     //CONSTRUCTORES
 
     public Ingreso() {
     }
 
-    public Ingreso(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Servicio servicio, UserEmpleado userEmpleado) {
+    public Ingreso(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Servicio servicio, UserEmpleado userEmpleado, long importe) {
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.servicio = servicio;
         this.userEmpleado = userEmpleado;
+        this.importe = importe;
     }
 
     //GETTERS Y SETTERS
@@ -89,5 +91,13 @@ public class Ingreso {
 
     public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
+    }
+
+    public long getImporte() {
+        return importe;
+    }
+
+    public void setImporte(long importe) {
+        this.importe = importe;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.servidor.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ public class UserCentroDeportivo extends User{
     @JoinColumn(name = "centro_dep_nombre")
     @NotNull
 //    @JsonBackReference
+    @JsonIgnoreProperties("usersCentroDep")
     private CentroDeportivo centroDeportivo;
 
     public UserCentroDeportivo(String email, Long cedula, String nombre, String password, Long telefono, CentroDeportivo centroDeportivo) {

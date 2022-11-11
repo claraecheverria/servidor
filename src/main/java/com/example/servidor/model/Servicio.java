@@ -1,6 +1,7 @@
 package com.example.servidor.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -41,12 +42,11 @@ public class Servicio {
     @ManyToMany(mappedBy = "serviciosFavoritos")
     private List<UserEmpleado> favoritos;
 
-//    @OneToMany(mappedBy = "servicio")
     @ElementCollection(fetch = FetchType.EAGER, targetClass = Imagen.class)
     @JoinTable(name = "servicio_imagenes", joinColumns = {@JoinColumn(name = "servicio_nombre", referencedColumnName = "nombre"), @JoinColumn(name = "servicio_centro_dep", referencedColumnName = "centro_dep_nombre")})
     private Set<Imagen> imagenes;
 
-    @JsonIgnoreProperties("servicio")
+    @JsonIgnore
     @OneToMany(mappedBy = "servicio")
     List<Ingreso> ingresos;
 

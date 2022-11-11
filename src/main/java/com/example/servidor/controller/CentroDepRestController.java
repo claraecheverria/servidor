@@ -60,19 +60,38 @@ public class CentroDepRestController {
         serviceServicio.saveServicioCentroDep(guardarEste);
     }
 
-    @GetMapping("/listaServiciosEsteCentroDep")
+    @GetMapping("/listaServiciosEsteCentroDep")//no se usa ?
     public List<Servicio> listaServiciosEsteCentroDep(){
         String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
         List<Servicio> servicios = serviceServicio.listaServiciosByCentroDep(centroDepNombre);
         return servicios;
     }
 
+    @GetMapping("/listaServiciosUnCentroDep")
+    public List<Servicio> listaServiciosUnCentroDep(){
+        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
+        List<Servicio> servicios = serviceServicio.listaServiciosByCentroDepAndType("SERVICIO", centroDepNombre);
+        return servicios;
+    }
+
+    @GetMapping("/listaCanchasUnCentroDep")
+    public List<Cancha> listaCanchasUnCentroDep(){
+        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
+        List<Cancha> canchas = serviceServicio.listaCanchasByCentroDepAndType("CANCHA", centroDepNombre);
+        return canchas;
+    }
+
     @PostMapping("/guardarIngreso")
     public void guardarIngreso(@RequestBody Ingreso ingreso){
+        System.out.println(ingreso.getServicio().getClass());
         String emailUserEmpl = ingreso.getUserEmpleado().getEmail();
         UserEmpleado esteUsrEmpl = (UserEmpleado) serviceUser.obtenerUserPorId(emailUserEmpl).get();
-        Ingreso nuevoIngreso = new Ingreso(ingreso.getFecha(), ingreso.getHoraInicio(),ingreso.getHoraFin(),ingreso.getServicio(), esteUsrEmpl);
+        Ingreso nuevoIngreso = new Ingreso(ingreso.getFecha(), ingreso.getHoraInicio(),ingreso.getHoraFin(),ingreso.getServicio(), esteUsrEmpl, ingreso.getImporte());
         serviceIngreso.saveIngreso(nuevoIngreso);
+        Long saldo = esteUsrEmpl.getSaldo();
+        saldo = saldo - ingreso.getImporte();
+        esteUsrEmpl.setSaldo(saldo);
+        serviceUser.saveUserEmpleado(esteUsrEmpl);
     }
     @PostMapping("/guardarFoto")//para admin
     public void crearGuardarFoto (@RequestBody String encodedString){

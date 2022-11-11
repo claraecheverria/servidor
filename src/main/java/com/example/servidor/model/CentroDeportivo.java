@@ -1,5 +1,6 @@
 package com.example.servidor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.Entity;
@@ -19,10 +20,12 @@ public class CentroDeportivo {
 
     @OneToMany(mappedBy = "centroDeportivo")
 //    @JsonManagedReference
+    @JsonIgnoreProperties("centroDeportivo")
     private List<UserCentroDeportivo> usersCentroDep;
 
     @OneToMany(mappedBy = "centroDeportivoServicio")
 //    @JsonManagedReference
+    @JsonIgnoreProperties("centroDeportivoServicio")
     private List<Servicio> serviciosCentroDep;
 
     //CONSTRUCTORES
