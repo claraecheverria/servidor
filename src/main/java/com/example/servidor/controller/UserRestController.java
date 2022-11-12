@@ -1,5 +1,6 @@
 package com.example.servidor.controller;
 
+import com.example.servidor.DTOs.ServicioDTO;
 import com.example.servidor.model.*;
 import com.example.servidor.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -167,11 +168,30 @@ public class UserRestController {
     }
 
     @GetMapping("/serviciosFavDeUnUser")
-    public List<Servicio> serviciosFavDeUnUser(){
+    public List<ServicioDTO> serviciosFavDeUnUser(){
         String emailUser = userADevolver.get(0)[1];
         UserEmpleado unUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
-        List<String[]> listaFavs = serviceUser.obtenerServiciosFav(emailUser);
-        List<Servicio> listaFavs2 = unUser.getServiciosFavoritos();
+        List<Servicio> listaFavs = unUser.getServiciosFavoritos();
+        List<ServicioDTO> listaFavs2 = new ArrayList<>();
+        for (int i=0; i<listaFavs.size(); i++){
+            Servicio currentServ = listaFavs.get(i);
+            ServicioDTO nuevoServDTO = new ServicioDTO(currentServ.getKey().getNombre(), currentServ.getKey().getCentroDeportivo(),currentServ.getCentroDeportivoServicio().getDireccion(),currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
+            listaFavs2.add(nuevoServDTO);
+        }
+        return  listaFavs2;
+    }
+
+    @GetMapping("/serviciosFavPrueba")
+    public List<ServicioDTO> serviciosFavPrueba(){
+        String emailUser = userADevolver.get(0)[1];
+        UserEmpleado unUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
+        List<Servicio> listaFavs = serviceServicio.listaFavssByEmailUser(emailUser);
+        List<ServicioDTO> listaFavs2 = new ArrayList<>();
+        for (int i=0; i<listaFavs.size(); i++){
+            Servicio currentServ = listaFavs.get(i);
+            ServicioDTO nuevoServDTO = new ServicioDTO(currentServ.getKey().getNombre(), currentServ.getKey().getCentroDeportivo(),currentServ.getCentroDeportivoServicio().getDireccion(),currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
+            listaFavs2.add(nuevoServDTO);
+        }
         return  listaFavs2;
     }
 

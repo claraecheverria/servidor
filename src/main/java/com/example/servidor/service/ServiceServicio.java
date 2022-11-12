@@ -60,4 +60,9 @@ public class ServiceServicio {
         return servicioRepository.findCanchasByCentroDepAndType(type,centroDepNombre);
     }
 
+    @Transactional
+    public List<Servicio> listaFavssByEmailUser(String email){
+        return servicioRepository.findByFavoritos_Email(email);
+    }
+
 }

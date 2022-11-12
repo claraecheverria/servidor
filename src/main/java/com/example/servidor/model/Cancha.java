@@ -16,7 +16,6 @@ import java.util.Set;
 public class Cancha extends Servicio{
     private int cupos;
 
-//    @JsonManagedReference
     @JsonIgnoreProperties("cancha")
     @OneToMany(mappedBy = "cancha")
     private List<Reserva> reservas;

@@ -1,6 +1,7 @@
 package com.example.servidor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +13,6 @@ import java.util.List;
 @DiscriminatorValue("EMPLEADO")
 public class UserEmpleado extends User{
 
-//    @NotBlank(message = "vencimiento is mandatory")
     private LocalDate vencimientoCarne;
 
     private Long saldo;
@@ -35,11 +35,9 @@ public class UserEmpleado extends User{
             name = "reservas_Empl",
             joinColumns = @JoinColumn(name = "empl_id"),
             inverseJoinColumns = @JoinColumn(name = "reserva_id", referencedColumnName = "id"))
-    @JsonIgnoreProperties("usuariosInvitados")
     private List<Reserva> reservasHechas;
 
     @OneToMany(mappedBy = "userEmpleado")
-    @JsonIgnoreProperties("userEmpleado")
     private List<Ingreso> ingresos;
 
     //CONSTRUCTORES

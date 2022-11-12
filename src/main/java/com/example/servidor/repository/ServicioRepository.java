@@ -27,6 +27,9 @@ public interface ServicioRepository extends CrudRepository<Servicio, ServicioIdN
             nativeQuery = true)
     List<Cancha> findCanchasByCentroDepAndType(@Param("type") String type, @Param("centroDepNombre") String centroDepNombre);
 
+    @Query("select s from Servicio s inner join s.favoritos favoritos where favoritos.email = ?1")
+    List<Servicio> findByFavoritos_Email(String email);
+
     List<Servicio> findByKey_CentroDeportivo(String centroDeportivo);
 
     Optional<Servicio> findByKey_NombreAndKey_CentroDeportivo(String nombre, String centroDeportivo);
