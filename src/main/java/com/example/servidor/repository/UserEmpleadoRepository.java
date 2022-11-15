@@ -1,5 +1,6 @@
 package com.example.servidor.repository;
 
+import com.example.servidor.model.Reserva;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,6 @@ public interface UserEmpleadoRepository extends UserRepository{
             nativeQuery = true)
     List<String[]> findServiciosFavByUserEmplId(
             @Param("email") String email);
+
+
 }

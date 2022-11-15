@@ -1,9 +1,6 @@
 package com.example.servidor.service;
 
-import com.example.servidor.model.User;
-import com.example.servidor.model.UserCentroDeportivo;
-import com.example.servidor.model.UserEmpleado;
-import com.example.servidor.model.UserEmpresa;
+import com.example.servidor.model.*;
 import com.example.servidor.repository.UserCentroDeportivoRepository;
 import com.example.servidor.repository.UserEmpleadoRepository;
 import com.example.servidor.repository.UserEmpresaRepository;

@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-//@JsonFilter("filter sin imagenes")
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "UniqueFechaCanchaYHoras", columnNames = { "fecha", "cancha_nombre","cancha_centro_dep" ,"horaInicio", "horaFin" }) })
 public class Reserva {
@@ -27,9 +26,21 @@ public class Reserva {
     private Cancha cancha;
 
     @ManyToMany(mappedBy = "reservasHechas")
-    @JsonIgnoreProperties("reservasHechas")//falta probar si funciona
     private List<UserEmpleado> usuariosInvitados;
 
+    //CONSTRUCTORES
+    public Reserva() {
+    }
+
+    public Reserva(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Cancha cancha, List<UserEmpleado> usuariosInvitados) {
+        this.fecha = fecha;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.cancha = cancha;
+        this.usuariosInvitados = usuariosInvitados;
+    }
+
+    //GETTERS Y SETTERS
     public Long getId() {
         return id;
     }

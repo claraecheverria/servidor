@@ -19,6 +19,10 @@ public class CanchaDTO extends ServicioDTO{
         this.cupos = cupos;
     }
 
+    public CanchaDTO(String nombreServicio, String nombreCentroDep, String direccion, Long precio, Set<DiasDeLaSemana> dias, LocalTime horaInicio, LocalTime horaFin, String descripcion, String tipo, Set<Imagen> imagenes, int cupos) {
+        super(nombreServicio, nombreCentroDep, direccion, precio, dias, horaInicio, horaFin, descripcion, tipo, imagenes);
+        this.cupos = cupos;
+    }
     //GETTERS Y SETTERS
 
     public int getCupos() {

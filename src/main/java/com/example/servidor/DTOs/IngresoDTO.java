@@ -4,29 +4,29 @@ import com.example.servidor.model.UserEmpleado;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
-public class ReservaDTO {
+public class IngresoDTO {
     private LocalDate fecha;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    private String canchaNombre;
-
+    private String servicioNombre;
     private String centroDepNombre;
-    private List<UserEmpleado> usuariosInvitados;
+    private String emailUserEmpleado;
+    private long importe;
 
     //CONSTRUCTORES
 
-    public ReservaDTO() {
+    public IngresoDTO() {
     }
 
-    public ReservaDTO(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, String canchaNombre, String centroDepNombre, List<UserEmpleado> usuariosInvitados) {
+    public IngresoDTO(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, String servicioNombre, String centroDepNombre, String emailUserEmpleado, long importe) {
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.canchaNombre = canchaNombre;
+        this.servicioNombre = servicioNombre;
         this.centroDepNombre = centroDepNombre;
-        this.usuariosInvitados = usuariosInvitados;
+        this.emailUserEmpleado = emailUserEmpleado;
+        this.importe = importe;
     }
 
     //GETTERS Y SETTERS
@@ -56,12 +56,12 @@ public class ReservaDTO {
         this.horaFin = horaFin;
     }
 
-    public String getCanchaNombre() {
-        return canchaNombre;
+    public String getServicioNombre() {
+        return servicioNombre;
     }
 
-    public void setCanchaNombre(String canchaNombre) {
-        this.canchaNombre = canchaNombre;
+    public void setServicioNombre(String servicioNombre) {
+        this.servicioNombre = servicioNombre;
     }
 
     public String getCentroDepNombre() {
@@ -72,11 +72,19 @@ public class ReservaDTO {
         this.centroDepNombre = centroDepNombre;
     }
 
-    public List<UserEmpleado> getUsuariosInvitados() {
-        return usuariosInvitados;
+    public String getEmailUserEmpleado() {
+        return emailUserEmpleado;
     }
 
-    public void setUsuariosInvitados(List<UserEmpleado> usuariosInvitados) {
-        this.usuariosInvitados = usuariosInvitados;
+    public void setEmailUserEmpleado(String emailUserEmpleado) {
+        this.emailUserEmpleado = emailUserEmpleado;
+    }
+
+    public long getImporte() {
+        return importe;
+    }
+
+    public void setImporte(long importe) {
+        this.importe = importe;
     }
 }

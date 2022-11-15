@@ -10,10 +10,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservaRepository extends CrudRepository<Reserva,Long> {
-
-//    @Query(value = "SELECT * FROM reserva r WHERE s.type = :type",
-//            nativeQuery = true)
-//    List<Reserva> findAllServiciosCancha(@Param("type") String type);
     List<Reserva> findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivo(LocalDate fecha, String nombre, String centroDeportivo);
+//    @Query(value = "SELECT r FROM Reserva r INNER JOIN Reservas_empl e ON r.id = e.reserva_id WHERE e.empl_id = :email and r.fecha = :fecha and r.cancha_nombre = :canchaNombre and r.cancha_centro_dep = :centroDepNombre",
+//            nativeQuery = true)
+//    List<Reserva> findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivoAndEmailUserEmpl(
+//            @Param("email") String email, @Param("fecha") LocalDate fecha, @Param("canchaNombre") String canchaNombre, @Param("centroDepNombre") String centroDepNombre);
+
+    @Query(value = "SELECT r.* FROM Reserva r , Reservas_empl e WHERE e.reserva_id = r.id and e.empl_id = :email and r.fecha = :fecha and r.cancha_nombre = :canchaNombre and r.cancha_centro_dep = :centroDepNombre",
+            nativeQuery = true)
+    List<Reserva> findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivoAndEmailUserEmpl(
+            @Param("email") String email, @Param("fecha") LocalDate fecha, @Param("canchaNombre") String canchaNombre, @Param("centroDepNombre") String centroDepNombre);
 
 }

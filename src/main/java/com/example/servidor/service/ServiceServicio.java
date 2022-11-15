@@ -3,6 +3,7 @@ package com.example.servidor.service;
 import com.example.servidor.model.Cancha;
 import com.example.servidor.model.Servicio;
 import com.example.servidor.model.ServicioIdNew;
+import com.example.servidor.model.UserEmpleado;
 import com.example.servidor.repository.CanchaRepository;
 import com.example.servidor.repository.ServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class ServiceServicio {
         return servicioRepository.findById(id);
     }
 
+    @Transactional
     public Optional<Servicio> obtenerServicioPorNombreYCentroDep (String nombre, String centroDepNombre){
         return servicioRepository.findByKey_NombreAndKey_CentroDeportivo(nombre,centroDepNombre);
     }
@@ -63,6 +65,11 @@ public class ServiceServicio {
     @Transactional
     public List<Servicio> listaFavssByEmailUser(String email){
         return servicioRepository.findByFavoritos_Email(email);
+    }
+
+    @Transactional
+    public void deleteServicioFav(UserEmpleado userEmpleado, String nombreServicio, String nombreCentroDep){
+        servicioRepository.deleteByFavoritosAndKey_NombreAndKey_CentroDeportivo(userEmpleado, nombreServicio, nombreCentroDep);
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.servidor.repository;
 import com.example.servidor.model.Cancha;
 import com.example.servidor.model.Servicio;
 import com.example.servidor.model.ServicioIdNew;
+import com.example.servidor.model.UserEmpleado;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -34,4 +35,5 @@ public interface ServicioRepository extends CrudRepository<Servicio, ServicioIdN
 
     Optional<Servicio> findByKey_NombreAndKey_CentroDeportivo(String nombre, String centroDeportivo);
 
+    void deleteByFavoritosAndKey_NombreAndKey_CentroDeportivo(UserEmpleado favoritos, String nombre, String centroDeportivo);
 }

@@ -29,17 +29,17 @@ public class ServiceReserva {
 
     @Transactional
     public List<Reserva> obtenerReservasPorFechaYId(LocalDate fecha, String nombreCancha, String centroDepNombre){
-//        List<Reserva> reservas = reservaRepository.findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivo(fecha,nombreCancha,centroDepNombre);
-//        List<Reserva> reservasADevolver = new ArrayList<>();
-//        for(int i=0; i<reservas.size(); i++){
-//            Reserva currentReserva = reservas.get(i);
-//            Cancha currentCancha = currentReserva.getCancha();
-//            Cancha nuevaCanchaMenosInfo = new Cancha(currentCancha.getKey().getNombre(),currentCancha.getCentroDeportivoServicio().getNombre());
-//            currentReserva.setCancha(nuevaCanchaMenosInfo);
-//            reservasADevolver.add(currentReserva);
-//        }
-//        return reservasADevolver;
         return reservaRepository.findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivo(fecha,nombreCancha,centroDepNombre);
+    }
+
+    @Transactional
+    public List<Reserva> obtenerReservasPorFechaYCanchaYEmail (String emailUserEmpl, LocalDate fecha, String nombreCancha, String centroDepNombre){
+        return reservaRepository.findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivoAndEmailUserEmpl(emailUserEmpl, fecha, nombreCancha, centroDepNombre);
+    }
+
+    public void eliminarReserva(Reserva reserva){
+        reservaRepository.delete(reserva);
+        System.out.println("reserva eliminada");
     }
 
 }
