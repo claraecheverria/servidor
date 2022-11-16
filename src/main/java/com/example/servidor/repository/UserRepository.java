@@ -19,4 +19,9 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Query(value = "SELECT * FROM users u where u.email = :email and u.type = EMPLEADO", nativeQuery = true)
     UserEmpleado findUserEmpleadoByEmail(@Param("email") String email);
 
+    @Query(value = "SELECT u.email , u.cedula ,u.nombre ,u.\"password\" ,u.telefono ,u.saldo ,u.vencimiento_carne ,u.centro_dep_nombre ,u.empresa_nombre FROM users u where u.empresa_nombre = :empresaNombre and u.type = 'EMPLEADO'", nativeQuery = true)
+    List<UserEmpleado> findUserEmpleadosByEmpresa(@Param("empresaNombre") String empresaNombre);
+
+
+
 }

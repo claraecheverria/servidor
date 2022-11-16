@@ -65,19 +65,13 @@ public class CentroDepRestController {
         serviceServicio.saveServicioCentroDep(guardarEste);
     }
 
-    @GetMapping("/listaServiciosEsteCentroDep")//no se usa ?
-    public List<Servicio> listaServiciosEsteCentroDep(){
-        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
-        List<Servicio> servicios = serviceServicio.listaServiciosByCentroDep(centroDepNombre);
-        return servicios;
-    }
+//    @GetMapping("/listaServiciosEsteCentroDep")//no se usa ?
+//    public List<Servicio> listaServiciosEsteCentroDep(){
+//        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
+//        List<Servicio> servicios = serviceServicio.listaServiciosByCentroDep(centroDepNombre);
+//        return servicios;
+//    }
 
-    @GetMapping("/listaServiciosUnCentroDep")
-    public List<Servicio> listaServiciosUnCentroDep(){
-        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
-        List<Servicio> servicios = serviceServicio.listaServiciosByCentroDepAndType("SERVICIO", centroDepNombre);
-        return servicios;
-    }
 
     @GetMapping("/listaServiciosUnCentroDepDTO")
     public List<ServicioDTO> listaServiciosUnCentroDepDTO(){
@@ -92,13 +86,6 @@ public class CentroDepRestController {
         return serviciosDTO;
     }
 
-    @GetMapping("/listaCanchasUnCentroDep")
-    public List<Cancha> listaCanchasUnCentroDep(){
-        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
-        List<Cancha> canchas = serviceServicio.listaCanchasByCentroDepAndType("CANCHA", centroDepNombre);
-        return canchas;
-    }
-
     @GetMapping("/listaCanchasUnCentroDepDTO")
     public List<CanchaDTO> listaCanchasUnCentroDepDTO(){
         String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
@@ -110,19 +97,6 @@ public class CentroDepRestController {
             canchasDTO.add(nuevaCanchaDTO);
         }
         return canchasDTO;
-    }
-
-    @PostMapping("/guardarIngreso")
-    public void guardarIngreso(@RequestBody Ingreso ingreso){
-        System.out.println(ingreso.getServicio().getClass());
-        String emailUserEmpl = ingreso.getUserEmpleado().getEmail();
-        UserEmpleado esteUsrEmpl = (UserEmpleado) serviceUser.obtenerUserPorId(emailUserEmpl).get();
-        Ingreso nuevoIngreso = new Ingreso(ingreso.getFecha(), ingreso.getHoraInicio(),ingreso.getHoraFin(),ingreso.getServicio(), esteUsrEmpl, ingreso.getImporte());
-        serviceIngreso.saveIngreso(nuevoIngreso);
-        Long saldo = esteUsrEmpl.getSaldo();
-        saldo = saldo - ingreso.getImporte();
-        esteUsrEmpl.setSaldo(saldo);
-        serviceUser.saveUserEmpleado(esteUsrEmpl);
     }
 
     @PostMapping("/guardarIngresoServicioDTO")
@@ -177,7 +151,7 @@ public class CentroDepRestController {
         }
         return reservasDTO;
     }
-    @PostMapping("/guardarFoto")//para admin
+    @PostMapping("/guardarFoto")
     public void crearGuardarFoto (@RequestBody String encodedString){
         String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
         List<Servicio> servicios = serviceServicio.listaServiciosByCentroDep(centroDepNombre);
@@ -191,26 +165,5 @@ public class CentroDepRestController {
             serviceServicio.saveServicioCentroDep(unServ);
         }
         System.out.println("Imagen guardadaaa");
-    }
-
-    @GetMapping("/prueba")
-    public String prueba(){
-        CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId("SuperGYM").get();
-        ServicioIdNew nuevaId = new ServicioIdNew();
-        nuevaId.setNombre("Pilates");
-        nuevaId.setCentroDeportivo("SuperGYM");
-        Servicio unServicio = serviceServicio.obtenerServicioById(nuevaId).get();
-        Set<DiasDeLaSemana> diass = new HashSet<>();
-        Set<DiasDeLaSemana> diass2 = unServicio.getDias();
-        diass2.add(DiasDeLaSemana.Lunes);
-        diass2.add(DiasDeLaSemana.Miercoles);
-        unServicio.setDias(diass2);
-        unServicio.setPrecio(300L);
-        System.out.println(diass2.size());
-//        Servicio unServicio = new Servicio("yogaa", unCentro, 555L, "lunes11hs", "clase de yoga para principiantes", "Clases" );
-        System.out.println("HOLA");
-        System.out.println(unServicio.getDescripcion());
-        serviceServicio.saveServicioCentroDep(unServicio);
-        return "prueba check";
     }
 }

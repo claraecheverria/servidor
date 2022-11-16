@@ -43,6 +43,11 @@ public class UserRestController {
     List<String[]> devuelveUser(){
         return userADevolver;
     }
+
+    @GetMapping("/saldo")
+    public String devuelveSaldoUser(){
+        return userADevolver.get(0)[6];
+    }
     @PostMapping("/userParaCheck")//para login
     public void userParaCheck(@RequestBody User user){
         userADevolver = serviceUser.obtenerUsuarioPorIdyPassword(user);
@@ -188,6 +193,7 @@ public class UserRestController {
         currentUser.setServiciosFavoritos(listaFavs);
         serviceUser.saveUserEmpleado(currentUser);
     }
+    @Transactional
     @PostMapping("/agregarServicioFavDTO")//falta probar si funciona
     public void agregarServicioFavDTO(@RequestBody ServicioDTO servicioDTO){
         String emailUser = userADevolver.get(0)[1];
@@ -208,19 +214,19 @@ public class UserRestController {
         System.out.println("Fav borraado");
     }
 
-    @GetMapping("/serviciosFavDeUnUser")
-    public List<ServicioDTO> serviciosFavDeUnUser(){
-        String emailUser = userADevolver.get(0)[1];
-        UserEmpleado unUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
-        List<Servicio> listaFavs = unUser.getServiciosFavoritos();
-        List<ServicioDTO> listaFavs2 = new ArrayList<>();
-        for (int i=0; i<listaFavs.size(); i++){
-            Servicio currentServ = listaFavs.get(i);
-            ServicioDTO nuevoServDTO = new ServicioDTO(currentServ.getKey().getNombre(), currentServ.getKey().getCentroDeportivo(),currentServ.getCentroDeportivoServicio().getDireccion(),currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
-            listaFavs2.add(nuevoServDTO);
-        }
-        return  listaFavs2;
-    }
+//    @GetMapping("/serviciosFavDeUnUser")
+//    public List<ServicioDTO> serviciosFavDeUnUser(){
+//        String emailUser = userADevolver.get(0)[1];
+//        UserEmpleado unUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
+//        List<Servicio> listaFavs = unUser.getServiciosFavoritos();
+//        List<ServicioDTO> listaFavs2 = new ArrayList<>();
+//        for (int i=0; i<listaFavs.size(); i++){
+//            Servicio currentServ = listaFavs.get(i);
+//            ServicioDTO nuevoServDTO = new ServicioDTO(currentServ.getKey().getNombre(), currentServ.getKey().getCentroDeportivo(),currentServ.getCentroDeportivoServicio().getDireccion(),currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
+//            listaFavs2.add(nuevoServDTO);
+//        }
+//        return  listaFavs2;
+//    }
 
     @GetMapping("/serviciosFavDeUnUserDTO")
     public List<ServicioDTO> serviciosFavDeUnUserDTO(){
@@ -230,7 +236,7 @@ public class UserRestController {
         List<ServicioDTO> listaFavs2 = new ArrayList<>();
         for (int i=0; i<listaFavs.size(); i++){
             Servicio currentServ = listaFavs.get(i);
-            ServicioDTO nuevoServDTO = new ServicioDTO(currentServ.getKey().getNombre(), currentServ.getKey().getCentroDeportivo(),currentServ.getCentroDeportivoServicio().getDireccion(),currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
+            ServicioDTO nuevoServDTO = new ServicioDTO(currentServ.getKey().getNombre(), currentServ.getKey().getCentroDeportivo(),currentServ.getCentroDeportivoServicio().getDireccion(),currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes());
             listaFavs2.add(nuevoServDTO);
         }
         return  listaFavs2;
