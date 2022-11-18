@@ -46,24 +46,6 @@ public class CentroDepRestController {
         UserCentroDeportivo guardarEste = new UserCentroDeportivo(userCentroDeportivo.getEmail(), userCentroDeportivo.getCedula(), userCentroDeportivo.getNombre(), userCentroDeportivo.getPassword(), userCentroDeportivo.getTelefono(), esteCentro);
         serviceUser.saveUserCentroDep(guardarEste);
     }
-    @PostMapping("/crearServicioCentroDep")//no funciona?
-    public void crearServicioCentroDep (@Valid @RequestBody Servicio servicio){
-        CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId(servicio.getCentroDeportivoServicio().getNombre()).get();
-        Set<Imagen> imagenes = servicio.getImagenes();
-        Set<Imagen> imagenesAGuardar = new HashSet<>();
-        int currentIndex = 0;
-        for (Imagen element : imagenes) {
-            System.out.println("Element at index" +currentIndex +" is: "+ element.getImagen());
-            Imagen nuevaImagen = new Imagen(element.getImagen());
-            imagenesAGuardar.add(nuevaImagen);
-            if (currentIndex == imagenes.size()){
-                break;
-            }
-            currentIndex++;
-        }
-        Servicio guardarEste = new Servicio(servicio.getKey().getNombre(), unCentro, servicio.getPrecio(), servicio.getDias(),servicio.getHoraInicio(),servicio.getHoraFin(), servicio.getDescripcion(), servicio.getTipo(), imagenesAGuardar);
-        serviceServicio.saveServicioCentroDep(guardarEste);
-    }
 
     @PostMapping("/crearServicioCentroDepDTO")//no funciona?
     public void crearServicioCentroDepDTO (@RequestBody ServicioDTO servicioDTO){
@@ -72,14 +54,6 @@ public class CentroDepRestController {
         Servicio guardarEste = new Servicio(servicioDTO.getNombreServicio(), unCentro, servicioDTO.getPrecio(), servicioDTO.getDias(), servicioDTO.getHoraInicio(), servicioDTO.getHoraFin(), servicioDTO.getDescripcion(), servicioDTO.getTipo(), servicioDTO.getImagenes());
         serviceServicio.saveServicioCentroDep(guardarEste);
     }
-
-//    @GetMapping("/listaServiciosEsteCentroDep")//no se usa ?
-//    public List<Servicio> listaServiciosEsteCentroDep(){
-//        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
-//        List<Servicio> servicios = serviceServicio.listaServiciosByCentroDep(centroDepNombre);
-//        return servicios;
-//    }
-
 
     @GetMapping("/listaServiciosUnCentroDepDTO")
     public List<ServicioDTO> listaServiciosUnCentroDepDTO(){
@@ -108,16 +82,23 @@ public class CentroDepRestController {
     }
 
     @PostMapping("/guardarIngresoServicioDTO")
-    public void guardarIngresoServicioDTO(@RequestBody IngresoDTO ingresoDTO){
+    @ResponseBody
+    public boolean guardarIngresoServicioDTO(@RequestBody IngresoDTO ingresoDTO){
+        boolean carneEnFecha = false;
         String emailUserEmpl = ingresoDTO.getEmailUserEmpleado();
         UserEmpleado esteUsrEmpl = (UserEmpleado) serviceUser.obtenerUserPorId(emailUserEmpl).get();
         Servicio esteServ = serviceServicio.obtenerServicioPorNombreYCentroDep(ingresoDTO.getServicioNombre(), ingresoDTO.getCentroDepNombre()).get();
         Ingreso nuevoIngreso = new Ingreso(ingresoDTO.getFecha(), ingresoDTO.getHoraInicio(), ingresoDTO.getHoraFin(), esteServ, esteUsrEmpl, ingresoDTO.getImporte());
-        serviceIngreso.saveIngreso(nuevoIngreso);
-        Long saldo = esteUsrEmpl.getSaldo();
-        saldo = saldo - ingresoDTO.getImporte();
-        esteUsrEmpl.setSaldo(saldo);
-        serviceUser.saveUserEmpleado(esteUsrEmpl);
+        if (ingresoDTO.getFecha().isBefore(esteUsrEmpl.getVencimientoCarne()) || ingresoDTO.getFecha().isEqual(esteUsrEmpl.getVencimientoCarne())){
+            serviceIngreso.saveIngreso(nuevoIngreso);
+            Long saldo = esteUsrEmpl.getSaldo();
+            saldo = saldo - ingresoDTO.getImporte();
+            esteUsrEmpl.setSaldo(saldo);
+            serviceUser.saveUserEmpleado(esteUsrEmpl);
+            carneEnFecha = true;
+        }
+
+        return carneEnFecha;
     }
 
     @PostMapping("/guardarIngresoCanchaDTO")

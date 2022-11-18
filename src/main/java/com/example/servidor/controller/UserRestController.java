@@ -58,13 +58,6 @@ public class UserRestController {
         return serviceUser.userExiste(emailUser);
     }
 
-    @GetMapping("/reservasEnFecha")
-    public List<Reserva> reservasEnFechaYServicio (@RequestParam("fecha")@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha,
-                                                   @RequestParam("servicio") String servicioNombre,
-                                                   @RequestParam("centroDep") String centroDepNombre){
-        List<Reserva> reservas = serviceReserva.obtenerReservasPorFechaYId(fecha,servicioNombre,centroDepNombre);
-        return reservas;
-    }
     @GetMapping("/reservasEnFechaDTO")
     public List<ReservaDTO> reservasEnFechaYServicioDTO (@RequestParam("fecha")@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha,
                                                    @RequestParam("servicio") String servicioNombre,
@@ -77,28 +70,6 @@ public class UserRestController {
             reservasDTO.add(nuevaReservaDTO);
         }
         return reservasDTO;
-    }
-
-    @Transactional
-    @PostMapping("/hacerReserva")//falta probar si funciona
-    public void hacerReserva(@RequestBody Reserva reserva) {
-        String emailUser = userADevolver.get(0)[1];
-        UserEmpleado currentUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
-        List<Reserva> listReservasUser = currentUser.getReservasHechas();
-        List<UserEmpleado> listaEmplQueLlega = reserva.getUsuariosInvitados();
-        List<UserEmpleado> listaEmplAGuardar = new ArrayList<>();
-        for(int i = 0; i<listaEmplQueLlega.size(); i++){
-            UserEmpleado curreeeentUser = listaEmplQueLlega.get(i);
-            UserEmpleado userConTodosLosDatos = (UserEmpleado) serviceUser.obtenerUserPorId(curreeeentUser.getEmail()).get();
-            listaEmplAGuardar.add(userConTodosLosDatos);
-        }
-        reserva.setUsuariosInvitados(listaEmplAGuardar);
-        Set<Imagen> imagenesVacias = new HashSet<>();
-//        reserva.getCancha().setImagenes(imagenesVacias);
-        listReservasUser.add(reserva);
-        currentUser.setReservasHechas(listReservasUser);
-        serviceReserva.saveReserva(reserva);
-        serviceUser.saveUserEmpleado(currentUser);
     }
 
     @Transactional
@@ -136,18 +107,6 @@ public class UserRestController {
         serviceReserva.saveReserva(nuevaReserva);
         serviceUser.saveUserEmpleado(currentUser);
     }
-
-    @GetMapping("/listaServicios")//valido para todos los empleados
-    List<Servicio> listServicios (){
-        List<Servicio> listaQuery = serviceServicio.listaServicios("SERVICIO");
-        List<Servicio> listaSinFav = new ArrayList<>();
-        for (int i = 0; i< listaQuery.size(); i++){
-            Servicio currentServ = listaQuery.get(i);
-            Servicio nuevoServ = new Servicio(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes());
-            listaSinFav.add(nuevoServ);
-        }
-        return listaSinFav;
-    }
     @GetMapping("/listaServiciosDTO")//valido para todos los empleados
     List<ServicioDTO> listServiciosDTO(){
         List<Servicio> listaQuery = serviceServicio.listaServicios("SERVICIO");
@@ -159,22 +118,9 @@ public class UserRestController {
         }
         return listaDTO;
     }
-
-    @GetMapping("/listaServiciosCancha")//valido para todos los empleados
-    List<Cancha> listServiciosCancha (){
-        List<Cancha> listaQuery = serviceServicio.listaServiciosCancha("CANCHA");
-        List<Cancha> listaSinFav = new ArrayList<>();
-        for (int i = 0; i< listaQuery.size(); i++){
-            Cancha currentServ = listaQuery.get(i);
-            Cancha nuevaCancha = new Cancha(currentServ.getKey().getNombre(), currentServ.getCentroDeportivoServicio(), currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo(), currentServ.getImagenes(),currentServ.getCupos());
-            listaSinFav.add(nuevaCancha);
-        }
-        return listaSinFav;
-    }
     @GetMapping("/listaServiciosCanchaDTO")//valido para todos los empleados
     List<CanchaDTO> listServiciosCanchaDTO(){
         List<Cancha> listaQuery = serviceServicio.listaServiciosCancha("CANCHA");
-
         List<CanchaDTO> listaDTO = new ArrayList<>();
         for (int i = 0; i< listaQuery.size(); i++){
             Cancha currentServ = listaQuery.get(i);
@@ -182,16 +128,6 @@ public class UserRestController {
             listaDTO.add(nuevaCancha);
         }
         return listaDTO;
-    }
-
-    @PostMapping("/agregarServicioFav")//falta probar si funciona
-    public void agregarServicioFav(@RequestBody Servicio servicio){
-        String emailUser = userADevolver.get(0)[1];
-        UserEmpleado currentUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
-        List<Servicio> listaFavs = currentUser.getServiciosFavoritos();
-        listaFavs.add(servicio);
-        currentUser.setServiciosFavoritos(listaFavs);
-        serviceUser.saveUserEmpleado(currentUser);
     }
     @Transactional
     @PostMapping("/agregarServicioFavDTO")//falta probar si funciona
@@ -205,7 +141,7 @@ public class UserRestController {
         serviceUser.saveUserEmpleado(currentUser);
     }
 
-    @PostMapping("/eliminarServicioFav")//falta probar si funciona
+    @PostMapping("/eliminarServicioFav")
     public void eliminarServicioFav(@RequestBody ServicioDTO servicioDTO){
         String emailUser = userADevolver.get(0)[1];
         UserEmpleado currentUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
@@ -213,13 +149,11 @@ public class UserRestController {
         for (int i= 0; i<serviciosFavs.size();i++){
             Servicio current = serviciosFavs.get(i);
             if (current.getKey().getNombre().equals(servicioDTO.getNombreServicio()) && current.getKey().getCentroDeportivo().equals(servicioDTO.getNombreCentroDep())){
-                System.out.println("encontre servicio");
                 serviciosFavs.remove(current);
             }
         }
         currentUser.setServiciosFavoritos(serviciosFavs);
         serviceUser.saveUserEmpleado(currentUser);
-        System.out.println("Fav borraado");
     }
 
     @GetMapping("/serviciosFavDeUnUserDTO")

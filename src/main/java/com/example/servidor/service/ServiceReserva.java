@@ -34,7 +34,7 @@ public class ServiceReserva {
 
     @Transactional
     public List<Reserva> obtenerReservasPorFechaYCanchaYEmail (String emailUserEmpl, LocalDate fecha, String nombreCancha, String centroDepNombre){
-        return reservaRepository.findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivoAndEmailUserEmpl(emailUserEmpl, fecha, nombreCancha, centroDepNombre);
+        return reservaRepository.findByUserEmplCreador_EmailAndFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivo(emailUserEmpl, fecha, nombreCancha, centroDepNombre);
     }
 
 
