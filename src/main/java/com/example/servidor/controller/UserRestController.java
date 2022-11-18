@@ -130,7 +130,7 @@ public class UserRestController {
             UserEmpleado userConTodosLosDatos = (UserEmpleado) serviceUser.obtenerUserPorId(curreeeentUser.getEmail()).get();
             listaEmplAGuardar.add(userConTodosLosDatos);
         }
-        Reserva nuevaReserva = new Reserva(reservaDTO.getFecha(), reservaDTO.getHoraInicio(), reservaDTO.getHoraFin(), estaCancha, listaEmplAGuardar);
+        Reserva nuevaReserva = new Reserva(reservaDTO.getFecha(), reservaDTO.getHoraInicio(), reservaDTO.getHoraFin(), estaCancha, currentUser, listaEmplAGuardar);
         listReservasUser.add(nuevaReserva);
         currentUser.setReservasHechas(listReservasUser);
         serviceReserva.saveReserva(nuevaReserva);

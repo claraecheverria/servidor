@@ -29,13 +29,11 @@ public class UserEmpleado extends User{
             inverseJoinColumns = {@JoinColumn(name = "servicio_nombre", referencedColumnName = "nombre"), @JoinColumn(name = "servicio_centro_dep", referencedColumnName = "centro_dep_nombre")})
     private List<Servicio> serviciosFavoritos;
 
-
-    @ManyToMany
-    @JoinTable(
-            name = "reservas_Empl",
-            joinColumns = @JoinColumn(name = "empl_id"),
-            inverseJoinColumns = @JoinColumn(name = "reserva_id", referencedColumnName = "id"))
+    @OneToMany(mappedBy = "userEmplCreador")
     private List<Reserva> reservasHechas;
+
+    @ManyToMany(mappedBy = "usuariosInvitados")
+    private List<Reserva> reservasInvitados;
 
     @OneToMany(mappedBy = "userEmpleado")
     private List<Ingreso> ingresos;
@@ -86,11 +84,11 @@ public class UserEmpleado extends User{
     }
 
     public List<Reserva> getReservasHechas() {
-        return reservasHechas;
+        return reservasInvitados;
     }
 
     public void setReservasHechas(List<Reserva> reservasHechas) {
-        this.reservasHechas = reservasHechas;
+        this.reservasInvitados = reservasHechas;
     }
 
     public List<Ingreso> getIngresos() {

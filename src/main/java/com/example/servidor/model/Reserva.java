@@ -25,18 +25,27 @@ public class Reserva {
     @JoinColumn(name = "cancha_centro_dep", referencedColumnName = "centro_dep_nombre")
     private Cancha cancha;
 
-    @ManyToMany(mappedBy = "reservasHechas")
+    @ManyToOne
+    @JoinColumn(name = "email_creador", referencedColumnName = "email")
+    private UserEmpleado userEmplCreador;
+
+    @ManyToMany
+    @JoinTable(
+            name = "reservas_empl_invitados",
+            joinColumns = @JoinColumn(name = "reserva_id"),
+            inverseJoinColumns = @JoinColumn(name = "empl_id", referencedColumnName = "email"))
     private List<UserEmpleado> usuariosInvitados;
 
     //CONSTRUCTORES
     public Reserva() {
     }
 
-    public Reserva(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Cancha cancha, List<UserEmpleado> usuariosInvitados) {
+    public Reserva(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Cancha cancha, UserEmpleado userEmplCreador, List<UserEmpleado> usuariosInvitados) {
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.cancha = cancha;
+        this.userEmplCreador = userEmplCreador;
         this.usuariosInvitados = usuariosInvitados;
     }
 
@@ -87,5 +96,13 @@ public class Reserva {
 
     public void setUsuariosInvitados(List<UserEmpleado> usuariosInvitados) {
         this.usuariosInvitados = usuariosInvitados;
+    }
+
+    public UserEmpleado getUserEmplCreador() {
+        return userEmplCreador;
+    }
+
+    public void setUserEmplCreador(UserEmpleado userEmplCreador) {
+        this.userEmplCreador = userEmplCreador;
     }
 }

@@ -44,7 +44,6 @@ public class ServiceUser {
     @Transactional
     public void saveUserEmpleado (UserEmpleado userEmpleado){
         userEmpleadoRepository.save(userEmpleado);
-        System.out.println("user guradado!!");
     }
 
     public boolean userExiste(String emailUser){
