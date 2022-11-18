@@ -128,13 +128,11 @@ public class CentroDepRestController {
         Cancha esteServ = (Cancha) serviceServicio.obtenerServicioPorNombreYCentroDep(ingresoDTO.getServicioNombre(), ingresoDTO.getCentroDepNombre()).get();
         Ingreso nuevoIngreso = new Ingreso(ingresoDTO.getFecha(), ingresoDTO.getHoraInicio(), ingresoDTO.getHoraFin(), esteServ, esteUsrEmpl, ingresoDTO.getImporte());
         List<Reserva> reservasCliente = serviceReserva.obtenerReservasPorFechaYCanchaYEmail(ingresoDTO.getEmailUserEmpleado(), ingresoDTO.getFecha(), ingresoDTO.getServicioNombre(), ingresoDTO.getCentroDepNombre());
-        List<Reserva> reservasEnFecha = serviceReserva.obtenerReservasPorFechaYId(ingresoDTO.getFecha(), ingresoDTO.getServicioNombre(), ingresoDTO.getCentroDepNombre());
         Boolean tieneReserva = false;
         for (int i= 0;i< reservasCliente.size();i++){
             Reserva current = reservasCliente.get(i);
             if (current.getHoraInicio() == ingresoDTO.getHoraInicio() && current.getHoraFin()==ingresoDTO.getHoraFin()){
-                serviceReserva.eliminarReserva(current);
-                System.out.println("reserva encontrada");
+                current.setFueIngresada(true);
                 tieneReserva= true;
                 serviceIngreso.saveIngreso(nuevoIngreso);
                 Long saldo = esteUsrEmpl.getSaldo();

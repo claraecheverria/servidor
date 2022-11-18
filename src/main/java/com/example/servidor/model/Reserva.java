@@ -36,6 +36,8 @@ public class Reserva {
             inverseJoinColumns = @JoinColumn(name = "empl_id", referencedColumnName = "email"))
     private List<UserEmpleado> usuariosInvitados;
 
+    private boolean fueIngresada;
+
     //CONSTRUCTORES
     public Reserva() {
     }
@@ -47,6 +49,7 @@ public class Reserva {
         this.cancha = cancha;
         this.userEmplCreador = userEmplCreador;
         this.usuariosInvitados = usuariosInvitados;
+        this.fueIngresada = false;
     }
 
     //GETTERS Y SETTERS
@@ -104,5 +107,13 @@ public class Reserva {
 
     public void setUserEmplCreador(UserEmpleado userEmplCreador) {
         this.userEmplCreador = userEmplCreador;
+    }
+
+    public boolean isFueIngresada() {
+        return fueIngresada;
+    }
+
+    public void setFueIngresada(boolean fueIngresada) {
+        this.fueIngresada = fueIngresada;
     }
 }

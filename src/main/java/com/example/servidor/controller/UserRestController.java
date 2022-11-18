@@ -209,24 +209,18 @@ public class UserRestController {
     public void eliminarServicioFav(@RequestBody ServicioDTO servicioDTO){
         String emailUser = userADevolver.get(0)[1];
         UserEmpleado currentUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
-//        Servicio servicio = serviceServicio.obtenerServicioPorNombreYCentroDep(servicioDTO.getNombreServicio(), servicioDTO.getNombreCentroDep()).get();
-        serviceServicio.deleteServicioFav(currentUser,servicioDTO.getNombreServicio(), servicioDTO.getNombreCentroDep());
+        List<Servicio> serviciosFavs = currentUser.getServiciosFavoritos();
+        for (int i= 0; i<serviciosFavs.size();i++){
+            Servicio current = serviciosFavs.get(i);
+            if (current.getKey().getNombre().equals(servicioDTO.getNombreServicio()) && current.getKey().getCentroDeportivo().equals(servicioDTO.getNombreCentroDep())){
+                System.out.println("encontre servicio");
+                serviciosFavs.remove(current);
+            }
+        }
+        currentUser.setServiciosFavoritos(serviciosFavs);
+        serviceUser.saveUserEmpleado(currentUser);
         System.out.println("Fav borraado");
     }
-
-//    @GetMapping("/serviciosFavDeUnUser")
-//    public List<ServicioDTO> serviciosFavDeUnUser(){
-//        String emailUser = userADevolver.get(0)[1];
-//        UserEmpleado unUser = (UserEmpleado) serviceUser.obtenerUserPorId(emailUser).get();
-//        List<Servicio> listaFavs = unUser.getServiciosFavoritos();
-//        List<ServicioDTO> listaFavs2 = new ArrayList<>();
-//        for (int i=0; i<listaFavs.size(); i++){
-//            Servicio currentServ = listaFavs.get(i);
-//            ServicioDTO nuevoServDTO = new ServicioDTO(currentServ.getKey().getNombre(), currentServ.getKey().getCentroDeportivo(),currentServ.getCentroDeportivoServicio().getDireccion(),currentServ.getPrecio(), currentServ.getDias(), currentServ.getHoraInicio(), currentServ.getHoraFin(), currentServ.getDescripcion(), currentServ.getTipo());
-//            listaFavs2.add(nuevoServDTO);
-//        }
-//        return  listaFavs2;
-//    }
 
     @GetMapping("/serviciosFavDeUnUserDTO")
     public List<ServicioDTO> serviciosFavDeUnUserDTO(){

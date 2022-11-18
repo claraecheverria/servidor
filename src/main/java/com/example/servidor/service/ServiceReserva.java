@@ -37,9 +37,5 @@ public class ServiceReserva {
         return reservaRepository.findByFechaAndCancha_Key_NombreAndCancha_Key_CentroDeportivoAndEmailUserEmpl(emailUserEmpl, fecha, nombreCancha, centroDepNombre);
     }
 
-    public void eliminarReserva(Reserva reserva){
-        reservaRepository.delete(reserva);
-        System.out.println("reserva eliminada");
-    }
 
 }

@@ -67,9 +67,6 @@ public class ServiceServicio {
         return servicioRepository.findByFavoritos_Email(email);
     }
 
-    @Transactional
-    public void deleteServicioFav(UserEmpleado userEmpleado, String nombreServicio, String nombreCentroDep){
-        servicioRepository.deleteByFavoritosAndKey_NombreAndKey_CentroDeportivo(userEmpleado, nombreServicio, nombreCentroDep);
-    }
+
 
 }

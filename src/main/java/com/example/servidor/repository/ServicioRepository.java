@@ -35,5 +35,4 @@ public interface ServicioRepository extends CrudRepository<Servicio, ServicioIdN
 
     Optional<Servicio> findByKey_NombreAndKey_CentroDeportivo(String nombre, String centroDeportivo);
 
-    void deleteByFavoritosAndKey_NombreAndKey_CentroDeportivo(UserEmpleado favoritos, String nombre, String centroDeportivo);
 }
