@@ -47,11 +47,18 @@ public class CentroDepRestController {
         serviceUser.saveUserCentroDep(guardarEste);
     }
 
-    @PostMapping("/crearServicioCentroDepDTO")//no funciona?
+    @PostMapping("/crearServicioCentroDepDTO")
     public void crearServicioCentroDepDTO (@RequestBody ServicioDTO servicioDTO){
         String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
         CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId(centroDepNombre).get();
         Servicio guardarEste = new Servicio(servicioDTO.getNombreServicio(), unCentro, servicioDTO.getPrecio(), servicioDTO.getDias(), servicioDTO.getHoraInicio(), servicioDTO.getHoraFin(), servicioDTO.getDescripcion(), servicioDTO.getTipo(), servicioDTO.getImagenes());
+        serviceServicio.saveServicioCentroDep(guardarEste);
+    }
+    @PostMapping("/crearCanchaCentroDepDTO")
+    public void crearCanchaCentroDepDTO (@RequestBody CanchaDTO canchaDTO){
+        String centroDepNombre = userRestController.getUserADevolver().get(0)[8];
+        CentroDeportivo unCentro = serviceCentroDeportivo.obtenerCentroDepPorId(centroDepNombre).get();
+        Cancha guardarEste = new Cancha(canchaDTO.getNombreServicio(), unCentro, canchaDTO.getPrecio(), canchaDTO.getDias(), canchaDTO.getHoraInicio(), canchaDTO.getHoraFin(), canchaDTO.getDescripcion(), canchaDTO.getTipo(), canchaDTO.getImagenes(),canchaDTO.getCupos());
         serviceServicio.saveServicioCentroDep(guardarEste);
     }
 

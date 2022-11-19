@@ -141,6 +141,7 @@ public class UserRestController {
         serviceUser.saveUserEmpleado(currentUser);
     }
 
+    @Transactional
     @PostMapping("/eliminarServicioFav")
     public void eliminarServicioFav(@RequestBody ServicioDTO servicioDTO){
         String emailUser = userADevolver.get(0)[1];
