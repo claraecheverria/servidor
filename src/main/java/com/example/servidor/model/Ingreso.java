@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(name = "UniqueTodo", columnNames = { "fecha", "servicio_nombre","servicio_centro_dep" ,"userEmpleado" }) })
+@Table
 public class Ingreso {
     @Id
     @GeneratedValue
